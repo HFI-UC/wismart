@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "http://127.0.0.1:8000";
+axios.defaults.withCredentials = true
 
 export interface RegisterData {
     username: string;
@@ -13,6 +14,7 @@ export interface RegisterData {
 export interface LoginData {
     email: string;
     password: string;
+    turnstileToken: string
 }
 
 export interface Response {
@@ -26,8 +28,8 @@ export async function postRegister(data: RegisterData) {
   return response.data;
 }
 
-export async function postVerify(token: string) {
-    const response = await axios.post<Response>('/api/user/verify', { token: token });
+export async function postVerifyEmail(token: string) {
+    const response = await axios.post<Response>('/api/user/verify_email', { token: token });
     return response.data
 }
 

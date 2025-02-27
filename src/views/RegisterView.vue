@@ -7,7 +7,7 @@ import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
-// import VueTurnstile from "vue-turnstile"
+import VueTurnstile from "vue-turnstile"
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { postRegister, type RegisterData } from "../api";
@@ -72,7 +72,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         submitLoading.value = false;
         setTimeout(() => {
             router.push("/");
-        }, 2000);
+        }, 4000);
     } else {
         toast.add({
             severity: "error",
@@ -189,10 +189,10 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             class="flex flex-col gap-4 items-center justify-center"
                         >
                             <p class="text-center text-sm">告诉我们你是人类</p>
-                            <!-- <VueTurnstile
+                            <VueTurnstile
                                 v-model="turnstileToken"
                                 site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
-                            ></VueTurnstile> -->
+                            ></VueTurnstile>
                         </div>
                         <Button
                             :loading="submitLoading"

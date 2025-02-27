@@ -9,16 +9,19 @@ import { Form, type FormSubmitEvent } from "@primevue/forms";
 import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
+import VueTurnstile from "vue-turnstile"
+import Message from "primevue/message";
 import Button from "primevue/button";
 import { postLogin, type LoginData } from "../api";
 
 const props = defineProps<{
-    ref?: string;
+    callback?: string;
 }>();
 
-const initialValues = ref({
+const initialValues = ref<LoginData>({
     email: "",
     password: "",
+    turnstileToken: "",
 });
 
 const resolver = ref(
@@ -37,6 +40,7 @@ const toast = useToast();
 
 const submitLoading = ref(true);
 const router = useRouter();
+const turnstileToken = ref("")
 
 const onSubmitEvent = async (form: FormSubmitEvent) => {
     submitLoading.value = true
@@ -48,18 +52,20 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         toast.add({
             severity: "success",
             summary: "成功",
-            detail: response.message
+            detail: response.message,
+            life: 3000
         })
         submitLoading.value = false
-        if (props.ref) {
-            setTimeout(() => router.push(props.ref as string))
+        if (props.callback) {
+            setTimeout(() => router.push(props.callback as string))
         }
     }
     else {
         toast.add({
             severity: "error",
             summary: "错误",
-            detail: response.message
+            detail: response.message,
+            life: 3000
         })
         submitLoading.value = false
     }
@@ -122,6 +128,15 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 variant="simple"
                                 >{{ $form.password.error?.message }}</Message
                             >
+                        </div>
+                        <div
+                            class="flex flex-col gap-4 items-center justify-center"
+                        >
+                            <p class="text-center text-sm">告诉我们你是人类</p>
+                            <VueTurnstile
+                                v-model="turnstileToken"
+                                site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
+                            ></VueTurnstile>
                         </div>
                         <Button type="submit" icon="icon-log-in" label="登录"></Button>
                     </div>
