@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin "tailwindcss-primeui";
+
+:root {
+    font-family: Inter;
+}

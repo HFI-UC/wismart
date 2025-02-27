@@ -1,0 +1,132 @@
+<script setup lang="ts">
+import Card from "primevue/card";
+import { ref } from "vue";
+import { useToast } from "primevue/usetoast";
+import { useRouter } from "vue-router";
+import { z } from "zod";
+import { zodResolver } from "@primevue/forms/resolvers/zod";
+import { Form, type FormSubmitEvent } from "@primevue/forms";
+import InputText from "primevue/inputtext";
+import IconField from "primevue/iconfield";
+import InputIcon from "primevue/inputicon";
+import Button from "primevue/button";
+import { postLogin, type LoginData } from "../api";
+
+const props = defineProps<{
+    ref?: string;
+}>();
+
+const initialValues = ref({
+    email: "",
+    password: "",
+});
+
+const resolver = ref(
+    zodResolver(
+        z.object({
+            email: z
+                .string()
+                .min(1, { message: "请填写此栏。" })
+                .email({ message: "错误的邮箱格式。" }),
+            password: z.string().min(1, { message: "请填写此栏。" }),
+        })
+    )
+);
+
+const toast = useToast();
+
+const submitLoading = ref(true);
+const router = useRouter();
+
+const onSubmitEvent = async (form: FormSubmitEvent) => {
+    submitLoading.value = true
+    if (!form.valid) {
+        return
+    }
+    const response = await postLogin(form.values as LoginData)
+    if (response.success) {
+        toast.add({
+            severity: "success",
+            summary: "成功",
+            detail: response.message
+        })
+        submitLoading.value = false
+        if (props.ref) {
+            setTimeout(() => router.push(props.ref as string))
+        }
+    }
+    else {
+        toast.add({
+            severity: "error",
+            summary: "错误",
+            detail: response.message
+        })
+        submitLoading.value = false
+    }
+}
+</script>
+
+<template>
+    <div class="flex flex-col items-center justify-center w-full">
+        <Card class="w-[23rem] sm:w-[28rem] items-center p-4">
+            <template #header>
+                <h1 class="text-3xl font-bold my-8">登录</h1>
+            </template>
+            <template #content>
+                <Form
+                    v-slot="$form"
+                    :resolver
+                    :initialValues
+                    @submit="onSubmitEvent"
+                >
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-2">
+                            <IconField>
+                                <InputText
+                                    class="w-[17rem] sm:w-[20rem]"
+                                    name="email"
+                                    autocomplete="username"
+                                    type="text"
+                                    placeholder="邮箱"
+                                >
+                                </InputText>
+                                <InputIcon
+                                    class="icon-mail"
+                                ></InputIcon> </IconField
+                            ><Message
+                                v-if="$form.email?.invalid"
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >{{ $form.email.error?.message }}</Message
+                            >
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <IconField>
+                                <InputText
+                                    class="w-[17rem] sm:w-[20rem]"
+                                    name="password"
+                                    autocomplete="password"
+                                    type="password"
+                                    placeholder="密码"
+                                >
+                                </InputText>
+                                <InputIcon
+                                    class="icon-key-round"
+                                ></InputIcon>
+                                </IconField
+                            ><Message
+                                v-if="$form.password?.invalid"
+                                severity="error"
+                                size="small"
+                                variant="simple"
+                                >{{ $form.password.error?.message }}</Message
+                            >
+                        </div>
+                        <Button type="submit" icon="icon-log-in" label="登录"></Button>
+                    </div>
+                </Form>
+            </template>
+        </Card>
+    </div>
+</template>
