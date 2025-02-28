@@ -38,7 +38,7 @@ const resolver = ref(
 
 const toast = useToast();
 
-const submitLoading = ref(true);
+const submitLoading = ref(false);
 const router = useRouter();
 const turnstileToken = ref("");
 
