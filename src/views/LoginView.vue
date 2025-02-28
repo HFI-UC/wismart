@@ -58,7 +58,10 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         })
         submitLoading.value = false
         if (props.callback) {
-            setTimeout(() => router.push(props.callback as string))
+            setTimeout(() => router.push(props.callback as string), 3000)
+        }
+        else {
+            setTimeout(() => router.push("/"), 3000)
         }
     }
     else {
@@ -139,7 +142,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
                             ></VueTurnstile>
                         </div>
-                        <Button type="submit" icon="icon-log-in" label="登录"></Button>
+                        <Button type="submit" icon="icon-log-in" :disabled="turnstileToken == ''" :loading="submitLoading" label="登录"></Button>
                     </div>
                 </Form>
             </template>
