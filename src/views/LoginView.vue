@@ -89,7 +89,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                     :initialValues
                     @submit="onSubmitEvent"
                 >
-                    <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-4 items-center justify-center">
                         <div class="flex flex-col gap-2">
                             <IconField>
                                 <InputText
@@ -134,7 +134,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             >
                         </div>
                         <div
-                            class="flex flex-col gap-4 items-center justify-center"
+                            class="flex flex-col w-full gap-4 items-center justify-center"
                         >
                             <p class="text-center text-sm">告诉我们你是人类</p>
                             <VueTurnstile

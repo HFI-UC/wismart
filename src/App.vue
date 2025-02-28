@@ -3,6 +3,8 @@ import { RouterView, useRouter } from "vue-router";
 import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 import Toast from "primevue/toast";
+import { postLogout, postVerifyLogin } from "./api";
+import { useToast } from "primevue/usetoast";
 
 const router = useRouter()
 const iconClass = ref("icon-sun");
@@ -14,7 +16,29 @@ const toggleColorScheme = () => {
     iconClass.value = color == "white" ? "icon-sun" : "icon-moon";
 };
 
-onMounted(() => {
+const isLogin = ref(false)
+const toast = useToast()
+const onLogoutEvent = async () => {
+    const response = await postLogout()
+    if (response.success) {
+        toast.add({
+            severity: "success",
+            summary: "成功",
+            detail: response.message,
+            life: 3000,
+        });
+        window.location.reload()
+    } else {
+        toast.add({
+            severity: "error",
+            summary: "错误",
+            detail: response.message,
+            life: 3000,
+        });
+    }
+}
+
+onMounted(async () => {
     const color =
         sessionStorage.getItem("color") ||
         (window.matchMedia("(prefers-color-scheme: dark)").matches
@@ -26,6 +50,8 @@ onMounted(() => {
         root.classList.toggle("p-dark");
         iconClass.value = "icon-moon";
     }
+    const { data } = await postVerifyLogin()
+    isLogin.value = data
 });
 </script>
 
@@ -48,10 +74,19 @@ onMounted(() => {
                     rounded
                 ></Button>
                 <Button
+                    v-if="!isLogin"
                     icon="icon-log-in"
                     severity="success"
                     label="登录"
                     @click="router.push('/user/login')"
+                    rounded
+                ></Button>
+                <Button
+                    v-else
+                    icon="icon-log-out"
+                    severity="error"
+                    label="登出"
+                    @click="onLogoutEvent()"
                     rounded
                 ></Button>
                 <Button

@@ -19,7 +19,7 @@ export interface LoginData {
 
 export interface Response {
     success: boolean;
-    message: string;
+    message?: string;
     data?: any;
 }
 
@@ -35,5 +35,15 @@ export async function postVerifyEmail(token: string) {
 
 export async function postLogin(data: LoginData) {
     const response = await axios.post<Response>('/api/user/login', data);
+    return response.data
+}
+
+export async function postLogout() {
+    const response = await axios.post<Response>('/api/user/logout');
+    return response.data
+}
+
+export async function postVerifyLogin() {
+    const response = await axios.post<Response>('/api/user/verify_login')
     return response.data
 }
