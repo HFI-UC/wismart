@@ -9,22 +9,22 @@ const router = createRouter({
     routes: [
         {
             path: "/",
-            component: HomeView
+            component: HomeView,
         },
         {
             path: "/user/register",
-            component: RegisterView
+            component: RegisterView,
         },
         {
             path: "/user/verify",
             component: VerifyView,
-            props: route => ({ token: route.query.token })
+            props: (route) => ({ token: route.query.token }),
         },
         {
             path: "/user/login",
             component: LoginView,
-            props: route => ({ callback: route.query.callback })
-        }
+            props: (route) => ({ callback: route.query.callback }),
+        },
     ],
 });
 

@@ -9,7 +9,7 @@ import { Form, type FormSubmitEvent } from "@primevue/forms";
 import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
-import VueTurnstile from "vue-turnstile"
+import VueTurnstile from "vue-turnstile";
 import Message from "primevue/message";
 import Button from "primevue/button";
 import { postLogin, type LoginData } from "../api";
@@ -40,40 +40,38 @@ const toast = useToast();
 
 const submitLoading = ref(true);
 const router = useRouter();
-const turnstileToken = ref("")
+const turnstileToken = ref("");
 
 const onSubmitEvent = async (form: FormSubmitEvent) => {
-    submitLoading.value = true
+    submitLoading.value = true;
     if (!form.valid) {
-        return
+        return;
     }
-    form.values.turnstileToken = turnstileToken.value
-    const response = await postLogin(form.values as LoginData)
+    form.values.turnstileToken = turnstileToken.value;
+    const response = await postLogin(form.values as LoginData);
     if (response.success) {
         toast.add({
             severity: "success",
             summary: "成功",
             detail: response.message,
-            life: 3000
-        })
-        submitLoading.value = false
+            life: 3000,
+        });
+        submitLoading.value = false;
         if (props.callback) {
-            setTimeout(() => router.push(props.callback as string), 3000)
+            setTimeout(() => router.push(props.callback as string), 3000);
+        } else {
+            setTimeout(() => router.push("/"), 3000);
         }
-        else {
-            setTimeout(() => router.push("/"), 3000)
-        }
-    }
-    else {
+    } else {
         toast.add({
             severity: "error",
             summary: "错误",
             detail: response.message,
-            life: 3000
-        })
-        submitLoading.value = false
+            life: 3000,
+        });
+        submitLoading.value = false;
     }
-}
+};
 </script>
 
 <template>
@@ -89,7 +87,9 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                     :initialValues
                     @submit="onSubmitEvent"
                 >
-                    <div class="flex flex-col gap-4 items-center justify-center">
+                    <div
+                        class="flex flex-col gap-4 items-center justify-center"
+                    >
                         <div class="flex flex-col gap-2">
                             <IconField>
                                 <InputText
@@ -123,8 +123,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 </InputText>
                                 <InputIcon
                                     class="icon-key-round"
-                                ></InputIcon>
-                                </IconField
+                                ></InputIcon> </IconField
                             ><Message
                                 v-if="$form.password?.invalid"
                                 severity="error"
@@ -142,7 +141,13 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
                             ></VueTurnstile>
                         </div>
-                        <Button type="submit" icon="icon-log-in" :disabled="turnstileToken == ''" :loading="submitLoading" label="登录"></Button>
+                        <Button
+                            type="submit"
+                            icon="icon-log-in"
+                            :disabled="turnstileToken == ''"
+                            :loading="submitLoading"
+                            label="登录"
+                        ></Button>
                     </div>
                 </Form>
             </template>

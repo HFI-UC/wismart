@@ -7,7 +7,7 @@ import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
-import VueTurnstile from "vue-turnstile"
+import VueTurnstile from "vue-turnstile";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { postRegister, type RegisterData } from "../api";
@@ -97,7 +97,9 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                     :initialValues
                     @submit="onSubmitEvent"
                 >
-                    <div class="flex flex-col gap-4 items-center justify-center">
+                    <div
+                        class="flex flex-col gap-4 items-center justify-center"
+                    >
                         <div class="flex flex-col gap-2">
                             <IconField>
                                 <InputText

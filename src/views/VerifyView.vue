@@ -18,29 +18,28 @@ onMounted(async () => {
             severity: "error",
             summary: "错误",
             detail: "无效的令牌。",
-            life: 3000
+            life: 3000,
         });
-        router.push("/")
+        router.push("/");
     }
-    const response = await postVerifyEmail(props.token)
+    const response = await postVerifyEmail(props.token);
     if (response.success) {
         toast.add({
             severity: "success",
             summary: "成功",
             detail: response.message,
-            life: 3000
+            life: 3000,
         });
-        loading.value = false
-        setTimeout(() => router.push("/user/login"), 3000)
-    }
-    else {
+        loading.value = false;
+        setTimeout(() => router.push("/user/login"), 3000);
+    } else {
         toast.add({
             severity: "error",
             summary: "错误",
             detail: response.message,
-            life: 3000
+            life: 3000,
         });
-        setTimeout(() => router.push("/"), 2000)
+        setTimeout(() => router.push("/"), 2000);
     }
 });
 
@@ -56,16 +55,14 @@ const router = useRouter();
             </template>
             <template #content>
                 <div class="flex items-center min-h-[20rem]">
-                <ProgressSpinner
-                    v-if="loading"
-                    strokeWidth="4"
-                    fill="transparent"
-                />
-                <i
-                    v-else
-                    class="!text-[8em] text-green-500 icon-check"
-                >
-                </i></div>
+                    <ProgressSpinner
+                        v-if="loading"
+                        strokeWidth="4"
+                        fill="transparent"
+                    />
+                    <i v-else class="!text-[8em] text-green-500 icon-check">
+                    </i>
+                </div>
             </template>
         </Card>
     </div>
