@@ -47,6 +47,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
     if (!form.valid) {
         return
     }
+    form.values.turnstileToken = turnstileToken.value
     const response = await postLogin(form.values as LoginData)
     if (response.success) {
         toast.add({
