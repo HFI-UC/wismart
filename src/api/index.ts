@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-axios.defaults.baseURL = "https://wismart-backend-beta.vercel.app";
+axios.defaults.baseURL = "https://wismart-api.hfiuc.org";
 axios.defaults.withCredentials = true
 
 export interface RegisterData {

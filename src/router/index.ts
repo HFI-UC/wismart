@@ -23,7 +23,7 @@ const router = createRouter({
         {
             path: "/user/login",
             component: LoginView,
-            props: route => ({ ref: route.query.ref })
+            props: route => ({ callback: route.query.callback })
         }
     ],
 });
