@@ -18,7 +18,9 @@ const toggleColorScheme = () => {
 
 const isLogin = ref(false)
 const toast = useToast()
+const logoutLoading = ref(false)
 const onLogoutEvent = async () => {
+    logoutLoading.value = true
     const response = await postLogout()
     if (response.success) {
         toast.add({
@@ -36,6 +38,7 @@ const onLogoutEvent = async () => {
             life: 3000,
         });
     }
+    logoutLoading.value = false
 }
 
 onMounted(async () => {
@@ -84,6 +87,7 @@ onMounted(async () => {
                 <Button
                     v-else
                     icon="icon-log-out"
+                    :loading="logoutLoading"
                     severity="danger"
                     label="登出"
                     @click="onLogoutEvent()"
