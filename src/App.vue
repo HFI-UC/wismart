@@ -84,7 +84,7 @@ onMounted(async () => {
                 <Button
                     v-else
                     icon="icon-log-out"
-                    severity="error"
+                    severity="danger"
                     label="登出"
                     @click="onLogoutEvent()"
                     rounded

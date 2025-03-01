@@ -2,7 +2,6 @@
 import Card from "primevue/card";
 import { ref } from "vue";
 import { useToast } from "primevue/usetoast";
-import { useRouter } from "vue-router";
 import { z } from "zod";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { Form, type FormSubmitEvent } from "@primevue/forms";
@@ -39,7 +38,6 @@ const resolver = ref(
 const toast = useToast();
 
 const submitLoading = ref(false);
-const router = useRouter();
 const turnstileToken = ref("");
 
 const onSubmitEvent = async (form: FormSubmitEvent) => {
@@ -56,12 +54,8 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
-        submitLoading.value = false;
-        if (props.callback) {
-            setTimeout(() => router.push(props.callback as string), 3000);
-        } else {
-            setTimeout(() => router.push("/"), 3000);
-        }
+        setTimeout(() => submitLoading.value = false, 3000)
+        setTimeout(() => window.location.href = props.callback || "/", 3000);
     } else {
         toast.add({
             severity: "error",
