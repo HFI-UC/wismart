@@ -3,8 +3,9 @@ import { RouterView, useRouter } from "vue-router";
 import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 import Toast from "primevue/toast";
-import { postLogout, postVerifyLogin } from "./api";
+import { getLogout, getVerifyLogin } from "./api";
 import { useToast } from "primevue/usetoast";
+import { useRequest } from "vue-request"
 
 const router = useRouter()
 const iconClass = ref("icon-sun");
@@ -16,12 +17,12 @@ const toggleColorScheme = () => {
     iconClass.value = color == "white" ? "icon-sun" : "icon-moon";
 };
 
-const isLogin = ref(false)
+const { data: loginData } = useRequest(getVerifyLogin)
 const toast = useToast()
 const logoutLoading = ref(false)
 const onLogoutEvent = async () => {
     logoutLoading.value = true
-    const response = await postLogout()
+    const response = await getLogout()
     if (response.success) {
         toast.add({
             severity: "success",
@@ -53,8 +54,6 @@ onMounted(async () => {
         root.classList.toggle("p-dark");
         iconClass.value = "icon-moon";
     }
-    const { data } = await postVerifyLogin()
-    isLogin.value = data
 });
 </script>
 
@@ -77,7 +76,7 @@ onMounted(async () => {
                     rounded
                 ></Button>
                 <Button
-                    v-if="!isLogin"
+                    v-if="!loginData || !loginData.data"
                     icon="icon-log-in"
                     severity="success"
                     label="登录"

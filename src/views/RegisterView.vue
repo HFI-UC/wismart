@@ -2,7 +2,7 @@
 import { Form, type FormSubmitEvent } from "@primevue/forms";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { z } from "zod";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import Message from "primevue/message";
 import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
@@ -10,9 +10,29 @@ import InputIcon from "primevue/inputicon";
 import VueTurnstile from "vue-turnstile";
 import Card from "primevue/card";
 import Button from "primevue/button";
-import { postRegister, type RegisterData } from "../api";
+import { postRegister, getVerifyLogin, type RegisterData } from "../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
+import { useRequest } from "vue-request";
+
+const { data: loginData } = useRequest(getVerifyLogin);
+
+watch(
+    () => loginData.value,
+    () => {
+        if (loginData.value?.data) {
+            toast.add({
+                severity: "error",
+                summary: "错误",
+                detail: "已登录！",
+                life: 3000,
+            });
+            setTimeout(() => {
+                router.push("/");
+            }, 3000);
+        }
+    }
+);
 
 const initialValues = ref<RegisterData>({
     username: "",
@@ -71,7 +91,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         submitLoading.value = false;
         setTimeout(() => {
             router.push("/");
-        }, 4000);
+        }, 3000);
     } else {
         toast.add({
             severity: "error",

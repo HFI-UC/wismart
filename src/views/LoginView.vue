@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Card from "primevue/card";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 import { z } from "zod";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
@@ -11,11 +11,26 @@ import InputIcon from "primevue/inputicon";
 import VueTurnstile from "vue-turnstile";
 import Message from "primevue/message";
 import Button from "primevue/button";
-import { postLogin, type LoginData } from "../api";
+import { postLogin, getVerifyLogin, type LoginData } from "../api";
+import { useRequest } from "vue-request";
 
 const props = defineProps<{
     callback?: string;
 }>();
+
+const { data: loginData } = useRequest(getVerifyLogin)
+
+watch(() => loginData.value, () => {
+    if (loginData.value?.data) {
+        toast.add({
+            severity: "error",
+            summary: "错误",
+            detail: "已登录！",
+            life: 3000,
+        });
+        setTimeout(() => window.location.href = decodeURIComponent(props.callback || "/"), 3000);
+    }
+})
 
 const initialValues = ref<LoginData>({
     email: "",
@@ -55,7 +70,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             life: 3000,
         });
         setTimeout(() => submitLoading.value = false, 3000)
-        setTimeout(() => window.location.href = props.callback || "/", 3000);
+        setTimeout(() => window.location.href = decodeURIComponent(props.callback || "/"), 3000);
     } else {
         toast.add({
             severity: "error",

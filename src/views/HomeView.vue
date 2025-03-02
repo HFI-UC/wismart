@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import Button from "primevue/button";
+import { useRouter } from "vue-router";
+
+const router = useRouter()
 </script>
 
 <template>
@@ -12,9 +15,10 @@ import Button from "primevue/button";
         <div class="mt-16 flex flex-wrap gap-4 items-center justify-center">
             <Button icon="icon-shopping-cart" label="开始购物"></Button>
             <Button
+                @click="router.push('/product/new')"
                 severity="secondary"
                 icon="icon-upload"
-                label="提交物品"
+                label="新建商品"
             ></Button>
         </div>
     </div>

@@ -7,6 +7,7 @@ import App from "./App.vue";
 import router from "./router";
 import { definePreset } from "@primeuix/themes";
 import ToastService from "primevue/toastservice";
+import zh_cn from "primelocale/zh-CN.json";
 
 const app = createApp(App);
 app.use(PrimeVue, {
@@ -62,6 +63,7 @@ app.use(PrimeVue, {
             darkModeSelector: ".p-dark",
         },
     },
+    locale: zh_cn["zh-CN"]
 });
 app.use(ToastService);
 app.use(router);

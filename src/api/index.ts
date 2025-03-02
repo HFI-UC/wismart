@@ -1,4 +1,5 @@
 import axios from "axios";
+import COS, { type Credentials } from "cos-js-sdk-v5";
 
 axios.defaults.baseURL = "https://wismart-api.hfiuc.org";
 axios.defaults.withCredentials = true;
@@ -23,6 +24,16 @@ export interface Response {
     data?: any;
 }
 
+export interface NewProductData {
+    name: string
+    type: string
+    price: number | null
+    description: string
+    image: string
+    stock: number | null
+    turnstileToken: string
+}
+
 export async function postRegister(data: RegisterData) {
     const response = await axios.post<Response>("/api/user/register", data);
     return response.data;
@@ -30,7 +41,7 @@ export async function postRegister(data: RegisterData) {
 
 export async function postVerifyEmail(token: string) {
     const response = await axios.post<Response>("/api/user/verify_email", {
-        token: token,
+        token,
     });
     return response.data;
 }
@@ -40,12 +51,57 @@ export async function postLogin(data: LoginData) {
     return response.data;
 }
 
-export async function postLogout() {
-    const response = await axios.post<Response>("/api/user/logout");
+export async function getLogout() {
+    const response = await axios.get<Response>("/api/user/logout");
     return response.data;
 }
 
-export async function postVerifyLogin() {
-    const response = await axios.post<Response>("/api/user/verify_login");
+export async function getVerifyLogin() {
+    const response = await axios.get<Response>("/api/user/verify_login");
+    return response.data;
+}
+
+export async function uploadCOS(
+    file: File,
+): Promise<{ success: boolean; data: any }> {
+    const key = ""
+    const cos = new COS({
+        getAuthorization: async (_, callback) => {
+            const { SessionToken: SecurityToken, Key: key, ...rest } = (
+                await axios.get<{
+                    credentials: { SessionToken: string, Key: string } & Credentials;
+                }>("/api/cos/credential")
+            ).data.credentials;
+
+            callback({ SecurityToken, ...rest });
+        },
+    });
+    return new Promise(async (resolve) => {
+        cos.uploadFile(
+            {
+                Bucket: "repair-1304562386",
+                Region: "ap-guangzhou",
+                Key: key,
+                Body: await file.arrayBuffer(),
+            },
+            (err) => {
+                if (err) {
+                    resolve({
+                        success: false,
+                        data: null
+                    });
+                } else {
+                    resolve({
+                        success: true,
+                        data: key
+                    });
+                }
+            },
+        );
+    });
+}
+
+export async function postNewProduct(data: NewProductData) {
+    const response = await axios.post<Response>("/api/product/new", data);
     return response.data;
 }
