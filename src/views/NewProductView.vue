@@ -203,7 +203,6 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                         class="w-[17rem] sm:w-[20rem]"
                                         name="price"
                                         :min="1"
-                                        :max="100"
                                         mode="currency"
                                         currency="CNY"
                                         locale="zh-CN"
