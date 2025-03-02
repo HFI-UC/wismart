@@ -14,14 +14,14 @@ import Skeleton from "primevue/skeleton";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import FileUpload from "primevue/fileupload";
-import { postNewProduct, getVerifyLogin, type NewProductData, uploadCOS } from "../api";
+import { postNewProduct, getVerifyLogin, type NewProductData, uploadCOS, getProductTypes } from "../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { useRequest } from "vue-request";
 import type { FileUploadSelectEvent } from "primevue/fileupload";
 
 const { data: loginData } = useRequest(getVerifyLogin);
-
+const { data: typesData } = useRequest(getProductTypes)
 watch(
     () => loginData.value,
     () => {
@@ -163,6 +163,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 <Select
                                     class="w-[17rem] sm:w-[20rem]"
                                     dropdownIcon="icon-boxes"
+                                    :options="typesData?.data || []"
                                     name="type"
                                     placeholder="商品类型"
                                 ></Select>
@@ -206,7 +207,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                         mode="currency"
                                         currency="CNY"
                                         locale="zh-CN"
-                                        placeholder="价格"
+                                        placeholder="单价"
                                     >
                                     </InputNumber>
                                     <InputIcon

@@ -105,3 +105,8 @@ export async function postNewProduct(data: NewProductData) {
     const response = await axios.post<Response>("/api/product/new", data);
     return response.data;
 }
+
+export async function getProductTypes() {
+    const response = await axios.get<Response>("/api/product/types");
+    return response.data;
+}
