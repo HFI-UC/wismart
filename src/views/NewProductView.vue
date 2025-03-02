@@ -13,6 +13,7 @@ import Select from "primevue/select";
 import Skeleton from "primevue/skeleton";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
+import FileUpload from "primevue/fileupload";
 import { postNewProduct, getVerifyLogin, type NewProductData, uploadCOS } from "../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
