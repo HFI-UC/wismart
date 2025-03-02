@@ -21,22 +21,22 @@ import type { FileUploadSelectEvent } from "primevue/fileupload";
 
 const { data: loginData } = useRequest(getVerifyLogin);
 
-// watch(
-//     () => loginData.value,
-//     () => {
-//         if (!loginData.value?.data) {
-//             toast.add({
-//                 severity: "error",
-//                 summary: "错误",
-//                 detail: "请登录！",
-//                 life: 3000,
-//             });
-//             setTimeout(() => {
-//                 router.push(`/user/login?callback=${encodeURIComponent("/product/new")}`);
-//             }, 3000);
-//         }
-//     }
-// );
+watch(
+    () => loginData.value,
+    () => {
+        if (!loginData.value?.data) {
+            toast.add({
+                severity: "error",
+                summary: "错误",
+                detail: "请登录！",
+                life: 3000,
+            });
+            setTimeout(() => {
+                router.push(`/user/login?callback=${encodeURIComponent("/product/new")}`);
+            }, 3000);
+        }
+    }
+);
 
 const initialValues = ref<NewProductData>({
     name: "",
