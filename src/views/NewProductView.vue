@@ -14,14 +14,20 @@ import Skeleton from "primevue/skeleton";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import FileUpload from "primevue/fileupload";
-import { postNewProduct, getVerifyLogin, type NewProductData, uploadCOS, getProductTypes } from "../api";
+import {
+    postNewProduct,
+    getVerifyLogin,
+    type NewProductData,
+    uploadCOS,
+    getProductTypes,
+} from "../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { useRequest } from "vue-request";
 import type { FileUploadSelectEvent } from "primevue/fileupload";
 
 const { data: loginData } = useRequest(getVerifyLogin);
-const { data: typesData } = useRequest(getProductTypes)
+const { data: typesData } = useRequest(getProductTypes);
 watch(
     () => loginData.value,
     () => {
@@ -33,7 +39,9 @@ watch(
                 life: 3000,
             });
             setTimeout(() => {
-                router.push(`/user/login?callback=${encodeURIComponent("/product/new")}`);
+                router.push(
+                    `/user/login?callback=${encodeURIComponent("/product/new")}`
+                );
             }, 3000);
         }
     }
@@ -92,13 +100,15 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: "请上传商品照片！",
             life: 3000,
         });
-        return
+        submitLoading.value = false;
+        return;
     }
-    console.log(file.value)
-    const uploadResponse = await uploadCOS(file.value)
-    console.log("upload successfully.")
-    if (!uploadResponse.success) return
-    form.values.image = uploadResponse.data
+    const uploadResponse = await uploadCOS(file.value);
+    if (!uploadResponse.success) {
+        submitLoading.value = false;
+        return;
+    }
+    form.values.image = uploadResponse.data;
     const response = await postNewProduct(form.values as NewProductData);
     if (response.success) {
         toast.add({

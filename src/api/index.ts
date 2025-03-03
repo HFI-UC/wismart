@@ -90,6 +90,7 @@ export async function uploadCOS(
                         success: false,
                         data: null
                     });
+                    console.log(err)
                 } else {
                     resolve({
                         success: true,
