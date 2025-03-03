@@ -94,7 +94,9 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         });
         return
     }
+    console.log(file.value)
     const uploadResponse = await uploadCOS(file.value)
+    console.log("upload successfully.")
     if (!uploadResponse.success) return
     form.values.image = uploadResponse.data
     const response = await postNewProduct(form.values as NewProductData);
