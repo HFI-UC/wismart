@@ -65,19 +65,23 @@ export async function uploadCOS(
     file: File
 ): Promise<{ success: boolean; data: any }> {
     const {
-        credentials: { sessionToken: SecurityToken, ...rest },
+        credentials: { sessionToken: SecurityToken, tmpSecretId: TmpSecretId, tmpSecretKey: TmpSecretKey },
+        startTime: StartTime,
+        expiredTime: ExpiredTime,
         key: key,
     } = (
         await axios.post<{
             data: {
-                credentials: { sessionToken: string } & Credentials;
+                credentials: { sessionToken: string, tmpSecretId: string, tmpSecretKey: string };
+                startTime: number,
+                expiredTime: number
                 key: string;
             };
         }>("/api/cos/credential", { fileName: file.name })
     ).data.data;
     const cos = new COS({
         getAuthorization: async (_, callback) => {
-            callback({ SecurityToken, ...rest });
+            callback({ SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime });
         },
     });
     return new Promise(async (resolve) => {
