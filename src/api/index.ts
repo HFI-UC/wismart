@@ -64,7 +64,6 @@ export async function getVerifyLogin() {
 export async function uploadCOS(
     file: File,
 ): Promise<{ success: boolean; data: any }> {
-    const key = ""
     const cos = new COS({
         getAuthorization: async (_, callback) => {
             const { SessionToken: SecurityToken, Key: key, ...rest } = (
@@ -72,10 +71,11 @@ export async function uploadCOS(
                     credentials: { SessionToken: string, Key: string } & Credentials;
                 }>("/api/cos/credential", { fileName: file.name })
             ).data.credentials;
-
+            console.log(key)
             callback({ SecurityToken, ...rest });
         },
     });
+    const key = ''
     return new Promise(async (resolve) => {
         cos.uploadFile(
             {
