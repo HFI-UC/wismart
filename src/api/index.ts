@@ -1,5 +1,5 @@
 import axios from "axios";
-import COS, { type Credentials } from "cos-js-sdk-v5";
+import COS from "cos-js-sdk-v5";
 
 axios.defaults.baseURL = "https://wismart-api.hfiuc.org";
 axios.defaults.withCredentials = true;
@@ -79,10 +79,9 @@ export async function uploadCOS(
             };
         }>("/api/cos/credential", { fileName: file.name })
     ).data.data;
-    console.log(SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime, key);
     const cos = new COS({
         getAuthorization: async (_, callback) => {
-            callback({ SecurityToken: SecurityToken, TmpSecretId: TmpSecretId, TmpSecretKey: TmpSecretKey, StartTime: StartTime, ExpiredTime: ExpiredTime });
+            callback({ SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime });
         },
     });
     return new Promise(async (resolve) => {
