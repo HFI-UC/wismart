@@ -81,6 +81,7 @@ export async function uploadCOS(
     ).data.data;
     const cos = new COS({
         getAuthorization: async (_, callback) => {
+            console.log(SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime)
             callback({ SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime });
         },
     });
