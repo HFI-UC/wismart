@@ -25,13 +25,13 @@ export interface Response {
 }
 
 export interface NewProductData {
-    name: string
-    type: string
-    price: number | null
-    description: string
-    image: string
-    stock: number | null
-    turnstileToken: string
+    name: string;
+    type: string;
+    price: number | null;
+    description: string;
+    image: string;
+    stock: number | null;
+    turnstileToken: string;
 }
 
 export async function postRegister(data: RegisterData) {
@@ -62,13 +62,21 @@ export async function getVerifyLogin() {
 }
 
 export async function uploadCOS(
-    file: File,
+    file: File
 ): Promise<{ success: boolean; data: any }> {
-    const { sessionToken: SecurityToken, key: key, ...rest } = (
+    const {
+        data: {
+            credentials: { sessionToken: SecurityToken, ...rest },
+            key: key,
+        },
+    } = (
         await axios.post<{
-            credentials: { sessionToken: string, key: string } & Credentials;
+            data: {
+                credentials: { sessionToken: string } & Credentials;
+                key: string;
+            };
         }>("/api/cos/credential", { fileName: file.name })
-    ).data.credentials;
+    ).data;
     const cos = new COS({
         getAuthorization: async (_, callback) => {
             callback({ SecurityToken, ...rest });
@@ -86,16 +94,16 @@ export async function uploadCOS(
                 if (err) {
                     resolve({
                         success: false,
-                        data: null
+                        data: null,
                     });
-                    console.log(err)
+                    console.log(err);
                 } else {
                     resolve({
                         success: true,
-                        data: key
+                        data: key,
                     });
                 }
-            },
+            }
         );
     });
 }
