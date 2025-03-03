@@ -64,9 +64,9 @@ export async function getVerifyLogin() {
 export async function uploadCOS(
     file: File,
 ): Promise<{ success: boolean; data: any }> {
-    const { SessionToken: SecurityToken, Key: key, ...rest } = (
+    const { sessionToken: SecurityToken, key: key, ...rest } = (
         await axios.post<{
-            credentials: { SessionToken: string, Key: string } & Credentials;
+            credentials: { sessionToken: string, key: string } & Credentials;
         }>("/api/cos/credential", { fileName: file.name })
     ).data.credentials;
     const cos = new COS({
