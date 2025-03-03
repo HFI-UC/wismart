@@ -79,9 +79,10 @@ export async function uploadCOS(
             };
         }>("/api/cos/credential", { fileName: file.name })
     ).data.data;
+    console.log(SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime, key);
     const cos = new COS({
         getAuthorization: async (_, callback) => {
-            callback({ SecurityToken, TmpSecretId, TmpSecretKey, StartTime, ExpiredTime });
+            callback({ SecurityToken: SecurityToken, TmpSecretId: TmpSecretId, TmpSecretKey: TmpSecretKey, StartTime: StartTime, ExpiredTime: ExpiredTime });
         },
     });
     return new Promise(async (resolve) => {
