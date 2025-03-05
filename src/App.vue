@@ -80,6 +80,7 @@ onMounted(async () => {
                     v-if="adminData?.data"
                     icon="icon-shield-user"
                     label="管理员"
+                    rounded
                 ></Button>
                 <Button
                     v-if="!loginData || !loginData.data"
