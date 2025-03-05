@@ -1,9 +1,11 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
 import RegisterView from "../views/RegisterView.vue";
-import VerifyView from "../views/VerifyView.vue";
+import EmailVerifyView from "../views/EmailVerifyView.vue";
 import LoginView from "../views/LoginView.vue";
 import NewProductView from "../views/NewProductView.vue";
+import ShopView from "../views/ShopView.vue";
+import ProductVerifyView from "../views/ProductVerifyView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -18,7 +20,7 @@ const router = createRouter({
         },
         {
             path: "/user/verify",
-            component: VerifyView,
+            component: EmailVerifyView,
             props: (route) => ({ token: route.query.token }),
         },
         {
@@ -29,6 +31,18 @@ const router = createRouter({
         {
             path: "/product/new",
             component: NewProductView
+        },
+        {
+            path: "/shop",
+            component: ShopView
+        },
+        // {
+        //     path: "/product/detail/:id",
+        //     component: ProductDetailView,
+        // }
+        {
+            path: "/product/verify",
+            component: ProductVerifyView
         }
     ],
 });

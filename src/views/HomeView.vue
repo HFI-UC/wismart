@@ -13,7 +13,7 @@ const router = useRouter()
             WisMart
         </h1>
         <div class="mt-16 flex flex-wrap gap-4 items-center justify-center">
-            <Button icon="icon-shopping-cart" label="开始购物"></Button>
+            <Button @click="router.push('/shop')" icon="icon-shopping-cart" label="开始购物"></Button>
             <Button
                 @click="router.push('/product/new')"
                 severity="secondary"

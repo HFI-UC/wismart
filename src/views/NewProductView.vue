@@ -292,8 +292,8 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             <Button
                                 :loading="submitLoading"
                                 type="submit"
-                                icon="icon-user-round-plus"
-                                label="注册"
+                                icon="icon-upload"
+                                label="提交"
                             ></Button>
                         </div>
                     </Form>
