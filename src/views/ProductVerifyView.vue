@@ -10,12 +10,15 @@ import {
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Image from "primevue/image";
-import { ref, watch } from "vue";
+import Skeleton from "primevue/skeleton";
+import Tag from "primevue/tag";
+import { computed, ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: productsData, run: fetchProducts } = useRequest(getAllProducts);
+const { data: products, run: fetchProducts } = useRequest(getAllProducts);
+const productsData = computed(() => products.value?.data.sort((a) => a.isVerified ? 1 : 0))
 const toast = useToast();
 const router = useRouter();
 watch(
@@ -74,9 +77,6 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
         });
         if (isVerified) verifyLoading.value[product.id] = false;
         else rejectLoading.value[product.id] = false
-        setTimeout(() => {
-            router.push("/");
-        }, 3000);
     } else {
         toast.add({
             severity: "error",
@@ -89,18 +89,19 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
     }
     if (isVerified) verifyLoading.value[product.id] = false
     else rejectLoading.value[product.id] = false
+    fetchProducts()
 }
 </script>
 
 <template>
     <h1 class="text-4xl font-bold my-8">商品审核</h1>
     <div
-        v-if="adminData?.data && productsData && productsData.success"
-        class="flex items-center justify-between w-full"
+        v-if="adminData?.data && products && products.success"
+        class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
         <Card
             class="sm:w-[49%] w-full"
-            v-for="product in productsData.data"
+            v-for="product in productsData"
         >
             <template #header>
                 <h2 class="mx-8 text-3xl font-bold my-8">
@@ -116,7 +117,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         >
                             <template #image>
                                 <img
-                                    class="h-[20rem]"
+                                    class="h-full object-contain"
                                     :src="product.image"
                                     alt="image"
                                 />
@@ -153,6 +154,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                             <b class="font-bold">上传者：</b
                             >{{ product.ownerId }}
                         </p>
+                        <p class="text-lg">
+                            <b class="font-bold">状态：</b>
+                            <Tag :severity="product.isVerified ? 'success' : 'warn'" :value="product.isVerified ? '已上架' : '未上架'"></Tag>
+                        </p>
                     </div>
                 </div>
             </template>
@@ -170,7 +175,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         class="w-full"
                         severity="danger"
                         icon="icon-x"
-                        label="打回"
+                        label="下架"
                         :loading="rejectLoading[product.id]"
                         @click="verifyProduct(false, product)"
                     ></Button>
@@ -178,4 +183,5 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             </template>
         </Card>
     </div>
+    <Skeleton v-else class="w-full min-h-[70vh] !rounded-xl"></Skeleton>
 </template>

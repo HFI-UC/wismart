@@ -4,6 +4,7 @@ import { postProducts } from "../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Image from "primevue/image";
+import Skeleton from "primevue/skeleton";
 import { ref } from "vue";
 const row = ref(10);
 const page = ref(0);
@@ -18,7 +19,7 @@ const { data: productsData } = useRequest(() =>
     <h1 class="text-4xl font-bold my-8">商店</h1>
     <div
         v-if="productsData && productsData.success"
-        class="flex items-center justify-between w-full"
+        class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
         <Card
             class="sm:w-[49%] w-full"
@@ -33,12 +34,12 @@ const { data: productsData } = useRequest(() =>
                 <div class="mx-3">
                     <div class="w-full flex items-center justify-center">
                         <Image
-                            class="w-full h-[20rem] items-center justify-center mt-4 mb-6 !rounded-xl"
+                            class="w-full h-[20rem] items-center justify-center mt-4 mb-6"
                             preview
                         >
                             <template #image>
                                 <img
-                                    class="h-[20rem]"
+                                    class="h-full object-contain"
                                     :src="product.image"
                                     alt="image"
                                 />
@@ -68,4 +69,5 @@ const { data: productsData } = useRequest(() =>
             </template>
         </Card>
     </div>
+    <Skeleton v-else class="w-full min-h-[70vh] !rounded-xl"></Skeleton>
 </template>

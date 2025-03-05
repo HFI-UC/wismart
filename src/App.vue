@@ -3,7 +3,7 @@ import { RouterView, useRouter } from "vue-router";
 import Button from "primevue/button";
 import { onMounted, ref } from "vue";
 import Toast from "primevue/toast";
-import { getLogout, getVerifyLogin } from "./api";
+import { getLogout, getVerifyAdmin, getVerifyLogin } from "./api";
 import { useToast } from "primevue/usetoast";
 import { useRequest } from "vue-request"
 
@@ -18,6 +18,7 @@ const toggleColorScheme = () => {
 };
 
 const { data: loginData } = useRequest(getVerifyLogin)
+const { data: adminData } = useRequest(getVerifyAdmin)
 const toast = useToast()
 const logoutLoading = ref(false)
 const onLogoutEvent = async () => {
@@ -76,10 +77,14 @@ onMounted(async () => {
                     rounded
                 ></Button>
                 <Button
+                    v-if="adminData?.data"
+                    icon="icon-shield-user"
+                    label="管理员"
+                ></Button>
+                <Button
                     v-if="!loginData || !loginData.data"
                     icon="icon-log-in"
                     severity="success"
-                    label="登录"
                     @click="router.push('/user/login')"
                     rounded
                 ></Button>
@@ -88,15 +93,14 @@ onMounted(async () => {
                     icon="icon-log-out"
                     :loading="logoutLoading"
                     severity="danger"
-                    label="登出"
                     @click="onLogoutEvent()"
                     rounded
                 ></Button>
                 <Button
+                    v-if="!adminData?.data"
                     icon="icon-user-round-plus"
                     @click="router.push('/user/register')"
                     severity="secondary"
-                    label="注册"
                     rounded
                 ></Button>
             </div>
