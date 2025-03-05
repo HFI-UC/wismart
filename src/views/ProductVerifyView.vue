@@ -18,7 +18,7 @@ import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
 const { data: products, run: fetchProducts } = useRequest(getAllProducts);
-const productsData = computed(() => products.value?.data.sort((a) => a.isVerified ? 1 : 0))
+const productsData = computed(() => products.value?.data.sort((a, b) => Number(a.isVerified) - Number(b.isVerified)))
 const toast = useToast();
 const router = useRouter();
 watch(
