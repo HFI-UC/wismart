@@ -261,6 +261,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                         @select="onFileSelect"
                                         accept="image/jpg, image/png, image/jpeg, image/gif, image/tmp, image/tiff"
                                         customUpload
+                                        uploadIcon="icon-upload"
                                         auto
                                         chooseLabel="
                                             上传照片

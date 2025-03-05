@@ -6,6 +6,7 @@ import LoginView from "../views/LoginView.vue";
 import NewProductView from "../views/NewProductView.vue";
 import ShopView from "../views/ShopView.vue";
 import ProductVerifyView from "../views/ProductVerifyView.vue";
+import AdminView from "../views/AdminView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -43,6 +44,10 @@ const router = createRouter({
         {
             path: "/product/verify",
             component: ProductVerifyView
+        },
+        {
+            path: "/admin",
+            component: AdminView
         }
     ],
 });

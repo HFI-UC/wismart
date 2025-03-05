@@ -8,7 +8,7 @@ const router = useRouter()
 <template>
     <div class="flex flex-col items-center justify-center h-[80vh]">
         <h1
-            class="text-4xl sm:text-6xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent text-center"
+            class="text-5xl sm:text-6xl font-extrabold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent text-center"
         >
             WisMart
         </h1>
