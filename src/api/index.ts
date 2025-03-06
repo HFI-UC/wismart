@@ -42,10 +42,11 @@ export interface GetProductData {
 }
 
 export interface ChangeProductData {
-    id: number
+    id: number;
     isVerified: boolean;
-    stock: number
-    sales: number
+    stock: number;
+    sales: number;
+    details: string;
 }
 
 export interface ProductData {
@@ -197,6 +198,6 @@ export async function getAllProducts() {
 }
 
 export async function postChangeProduct(product: ChangeProductData) {
-    const response = await axios.post<Response>("/api/product/change", product)
-    return response.data
+    const response = await axios.post<Response>("/api/product/change", product);
+    return response.data;
 }

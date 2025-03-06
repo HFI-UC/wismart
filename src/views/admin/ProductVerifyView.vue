@@ -5,8 +5,9 @@ import {
     getVerifyAdmin,
     getVerifyLogin,
     postChangeProduct,
+    type ChangeProductData,
     type ProductData,
-} from "../api";
+} from "../../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Image from "primevue/image";
@@ -65,7 +66,7 @@ const rejectLoading = ref<boolean[]>([])
 const verifyProduct = async (isVerified: boolean, product: ProductData) => {
     if (isVerified) verifyLoading.value[product.id] = true
     else rejectLoading.value[product.id] = true
-    const newProduct = { ...product }
+    const newProduct: ChangeProductData = { ...product, details: isVerified ? "你的商品已上架。" : "你的商品已下架。" }
     newProduct.isVerified = isVerified
     const response = await postChangeProduct(newProduct)
     if (response.success) {
