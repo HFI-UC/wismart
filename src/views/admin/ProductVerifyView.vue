@@ -66,7 +66,7 @@ const rejectLoading = ref<boolean[]>([])
 const verifyProduct = async (isVerified: boolean, product: ProductData) => {
     if (isVerified) verifyLoading.value[product.id] = true
     else rejectLoading.value[product.id] = true
-    const newProduct: ChangeProductData = { ...product, details: isVerified ? "你的商品已上架。" : "你的商品已下架。" }
+    const newProduct: ChangeProductData = { ...product, details: isVerified ? `你的商品 ${product.name} 已上架。` : `你的商品 ${product.name} 已下架。` }
     newProduct.isVerified = isVerified
     const response = await postChangeProduct(newProduct)
     if (response.success) {
