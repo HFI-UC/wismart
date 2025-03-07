@@ -23,7 +23,7 @@ import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { z } from "zod";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: types, run: fetchProducts } = useRequest(getProductTypes);
+const { data: types, run: fetchTypes } = useRequest(getProductTypes);
 const typesData = computed(() => {
     const data: { type: string }[] = [];
     const response: string[] = types.value?.data;
@@ -77,7 +77,7 @@ watch(
                 router.push("/");
             }, 3000);
         }
-        fetchProducts()
+        fetchTypes();
     }
 );
 
@@ -97,8 +97,9 @@ const onCreateEvent = async (form: FormSubmitEvent) => {
             life: 3000,
         });
         createLoading.value = false;
-        form.reset()
-        visible.value = false
+        form.reset();
+        fetchTypes();
+        visible.value = false;
     } else {
         toast.add({
             severity: "error",
@@ -119,7 +120,8 @@ const onDeleteEvent = async (type: string) => {
             detail: response.message,
             life: 3000,
         });
-        visible.value = false
+        fetchTypes();
+        visible.value = false;
     } else {
         toast.add({
             severity: "error",
@@ -128,7 +130,7 @@ const onDeleteEvent = async (type: string) => {
             life: 3000,
         });
     }
-}
+};
 </script>
 
 <template>

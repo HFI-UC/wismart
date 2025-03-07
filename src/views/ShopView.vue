@@ -55,16 +55,33 @@ const { data: productsData } = useRequest(() =>
                         </Image>
                     </div>
                     <div class="my-4 flex flex-col gap-4">
-                        <p class="text-lg"><b class="font-bold">商品描述：</b>{{ product.description }}</p>
-                        <p class="text-lg"><b class="font-bold">商品价格：</b>¥{{ product.price.toFixed(2) }}</p>
-                        <p class="text-lg"><b class="font-bold">商品类型：</b>{{ product.type }}</p>
-                        <p class="text-lg"><b class="font-bold">已售：</b>{{ product.sales }}/{{ product.stock }}</p>
+                        <p class="text-lg">
+                            <b class="font-bold">商品描述：</b
+                            >{{ product.description }}
+                        </p>
+                        <p class="text-lg">
+                            <b class="font-bold">商品价格：</b>¥{{
+                                product.price.toFixed(2)
+                            }}
+                        </p>
+                        <p class="text-lg">
+                            <b class="font-bold">商品类型：</b
+                            >{{ product.type }}
+                        </p>
+                        <p class="text-lg">
+                            <b class="font-bold">已售：</b
+                            >{{ product.sales }}/{{ product.stock }}
+                        </p>
                     </div>
                 </div>
             </template>
             <template #footer>
                 <div class="flex mx-3 gap-4">
-                    <Button class="w-full" icon="icon-shopping-cart" label="购买"></Button>
+                    <Button
+                        class="w-full"
+                        icon="icon-shopping-cart"
+                        label="购买"
+                    ></Button>
                 </div>
             </template>
         </Card>

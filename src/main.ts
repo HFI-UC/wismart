@@ -63,7 +63,7 @@ app.use(PrimeVue, {
             darkModeSelector: ".p-dark",
         },
     },
-    locale: zh_cn["zh-CN"]
+    locale: zh_cn["zh-CN"],
 });
 app.use(ToastService);
 app.use(router);

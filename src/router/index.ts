@@ -32,11 +32,11 @@ const router = createRouter({
         },
         {
             path: "/product/new",
-            component: NewProductView
+            component: NewProductView,
         },
         {
             path: "/shop",
-            component: ShopView
+            component: ShopView,
         },
         // {
         //     path: "/product/detail/:id",
@@ -44,7 +44,7 @@ const router = createRouter({
         // }
         {
             path: "/product/verify",
-            component: ProductVerifyView
+            component: ProductVerifyView,
         },
         {
             path: "/product/types",
@@ -52,7 +52,7 @@ const router = createRouter({
         },
         {
             path: "/admin",
-            component: AdminView
+            component: AdminView,
         },
     ],
 });

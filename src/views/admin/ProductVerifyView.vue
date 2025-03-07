@@ -19,7 +19,11 @@ import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
 const { data: products, run: fetchProducts } = useRequest(getAllProducts);
-const productsData = computed(() => products.value?.data.sort((a, b) => Number(a.isVerified) - Number(b.isVerified)))
+const productsData = computed(() =>
+    products.value?.data.sort(
+        (a, b) => Number(a.isVerified) - Number(b.isVerified)
+    )
+);
 const toast = useToast();
 const router = useRouter();
 watch(
@@ -56,19 +60,24 @@ watch(
                 router.push("/");
             }, 3000);
         }
-        fetchProducts()
+        fetchProducts();
     }
 );
 
-const verifyLoading = ref<boolean[]>([])
-const rejectLoading = ref<boolean[]>([])
+const verifyLoading = ref<boolean[]>([]);
+const rejectLoading = ref<boolean[]>([]);
 
 const verifyProduct = async (isVerified: boolean, product: ProductData) => {
-    if (isVerified) verifyLoading.value[product.id] = true
-    else rejectLoading.value[product.id] = true
-    const newProduct: ChangeProductData = { ...product, details: isVerified ? `你的商品 ${product.name} 已上架。` : `你的商品 ${product.name} 已下架。` }
-    newProduct.isVerified = isVerified
-    const response = await postChangeProduct(newProduct)
+    if (isVerified) verifyLoading.value[product.id] = true;
+    else rejectLoading.value[product.id] = true;
+    const newProduct: ChangeProductData = {
+        ...product,
+        details: isVerified
+            ? `你的商品 ${product.name} 已上架。`
+            : `你的商品 ${product.name} 已下架。`,
+    };
+    newProduct.isVerified = isVerified;
+    const response = await postChangeProduct(newProduct);
     if (response.success) {
         toast.add({
             severity: "success",
@@ -77,7 +86,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             life: 3000,
         });
         if (isVerified) verifyLoading.value[product.id] = false;
-        else rejectLoading.value[product.id] = false
+        else rejectLoading.value[product.id] = false;
     } else {
         toast.add({
             severity: "error",
@@ -86,12 +95,12 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             life: 3000,
         });
         if (isVerified) verifyLoading.value[product.id] = false;
-        else rejectLoading.value[product.id] = false
+        else rejectLoading.value[product.id] = false;
     }
-    if (isVerified) verifyLoading.value[product.id] = false
-    else rejectLoading.value[product.id] = false
-    fetchProducts()
-}
+    if (isVerified) verifyLoading.value[product.id] = false;
+    else rejectLoading.value[product.id] = false;
+    fetchProducts();
+};
 </script>
 
 <template>
@@ -100,10 +109,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
         v-if="adminData?.data && products && products.success"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
-        <Card
-            class="sm:w-[49%] w-full"
-            v-for="product in productsData"
-        >
+        <Card class="sm:w-[49%] w-full" v-for="product in productsData">
             <template #header>
                 <h2 class="mx-8 text-3xl font-bold my-8">
                     {{ product.name }}
@@ -157,7 +163,14 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">状态：</b>
-                            <Tag :severity="product.isVerified ? 'success' : 'warn'" :value="product.isVerified ? '已上架' : '未上架'"></Tag>
+                            <Tag
+                                :severity="
+                                    product.isVerified ? 'success' : 'warn'
+                                "
+                                :value="
+                                    product.isVerified ? '已上架' : '未上架'
+                                "
+                            ></Tag>
                         </p>
                     </div>
                 </div>

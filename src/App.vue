@@ -5,9 +5,9 @@ import { onMounted, ref } from "vue";
 import Toast from "primevue/toast";
 import { getLogout, getVerifyAdmin, getVerifyLogin } from "./api";
 import { useToast } from "primevue/usetoast";
-import { useRequest } from "vue-request"
+import { useRequest } from "vue-request";
 
-const router = useRouter()
+const router = useRouter();
 const iconClass = ref("icon-sun");
 const toggleColorScheme = () => {
     let color = sessionStorage.getItem("color") == "white" ? "dark" : "white";
@@ -17,13 +17,13 @@ const toggleColorScheme = () => {
     iconClass.value = color == "white" ? "icon-sun" : "icon-moon";
 };
 
-const { data: loginData } = useRequest(getVerifyLogin)
-const { data: adminData } = useRequest(getVerifyAdmin)
-const toast = useToast()
-const logoutLoading = ref(false)
+const { data: loginData } = useRequest(getVerifyLogin);
+const { data: adminData } = useRequest(getVerifyAdmin);
+const toast = useToast();
+const logoutLoading = ref(false);
 const onLogoutEvent = async () => {
-    logoutLoading.value = true
-    const response = await getLogout()
+    logoutLoading.value = true;
+    const response = await getLogout();
     if (response.success) {
         toast.add({
             severity: "success",
@@ -31,7 +31,7 @@ const onLogoutEvent = async () => {
             detail: response.message,
             life: 3000,
         });
-        window.location.reload()
+        window.location.reload();
     } else {
         toast.add({
             severity: "error",
@@ -40,8 +40,8 @@ const onLogoutEvent = async () => {
             life: 3000,
         });
     }
-    logoutLoading.value = false
-}
+    logoutLoading.value = false;
+};
 
 onMounted(async () => {
     const color =

@@ -203,11 +203,15 @@ export async function postChangeProduct(product: ChangeProductData) {
 }
 
 export async function postCreateProductType(type: string) {
-    const response = await axios.post<Response>("/api/product/types/new", { type })
-    return response.data
+    const response = await axios.post<Response>("/api/product/types/new", {
+        type,
+    });
+    return response.data;
 }
 
 export async function postRemoveProductType(type: string) {
-    const response = await axios.post<Response>("/api/product/types/remove", { type })
-    return response.data
+    const response = await axios.post<Response>("/api/product/types/remove", {
+        type,
+    });
+    return response.data;
 }

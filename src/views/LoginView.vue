@@ -18,19 +18,28 @@ const props = defineProps<{
     callback?: string;
 }>();
 
-const { data: loginData } = useRequest(getVerifyLogin)
+const { data: loginData } = useRequest(getVerifyLogin);
 
-watch(() => loginData.value, () => {
-    if (loginData.value?.data) {
-        toast.add({
-            severity: "error",
-            summary: "错误",
-            detail: "已登录！",
-            life: 3000,
-        });
-        setTimeout(() => window.location.href = decodeURIComponent(props.callback || "/"), 3000);
+watch(
+    () => loginData.value,
+    () => {
+        if (loginData.value?.data) {
+            toast.add({
+                severity: "error",
+                summary: "错误",
+                detail: "已登录！",
+                life: 3000,
+            });
+            setTimeout(
+                () =>
+                    (window.location.href = decodeURIComponent(
+                        props.callback || "/"
+                    )),
+                3000
+            );
+        }
     }
-})
+);
 
 const initialValues = ref<LoginData>({
     email: "",
@@ -69,8 +78,14 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
-        setTimeout(() => submitLoading.value = false, 3000)
-        setTimeout(() => window.location.href = decodeURIComponent(props.callback || "/"), 3000);
+        setTimeout(() => (submitLoading.value = false), 3000);
+        setTimeout(
+            () =>
+                (window.location.href = decodeURIComponent(
+                    props.callback || "/"
+                )),
+            3000
+        );
     } else {
         toast.add({
             severity: "error",
