@@ -17,7 +17,7 @@ const router = useRouter();
         <Button
             label="商品类型管理"
             @click="router.push('/product/types')"
-            icon="icon-shield-check"
+            icon="icon-shield-boxes"
         ></Button>
     </div>
 </template>
