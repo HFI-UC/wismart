@@ -53,7 +53,7 @@ const initialValues = ref<NewProductData>({
     type: null,
     price: null,
     description: "",
-    image: "",
+    image: null,
     stock: null,
     turnstileToken: "",
     isUnlimited: false,
@@ -96,6 +96,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         return;
     }
     form.values.turnstileToken = turnstileToken.value;
+    form.values.image = null;
     if (file.value) {
         const uploadResponse = await uploadCOS(file.value);
         if (!uploadResponse.success) {

@@ -29,7 +29,7 @@ export interface NewProductData {
     type: number | null;
     price: number | null;
     description: string;
-    image: string;
+    image: string | null;
     stock: number | null;
     turnstileToken: string;
     isUnlimited: boolean;
