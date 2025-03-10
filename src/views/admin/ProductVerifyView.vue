@@ -155,7 +155,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">已售：</b
-                            >{{ product.sales }}/{{ product.stock }}
+                            >{{ product.sales }}/{{ product.stock || "∞" }}
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">上传者：</b
