@@ -38,7 +38,7 @@ export interface NewProductData {
 export interface GetProductData {
     page: number;
     row: number;
-    type?: string;
+    type?: number;
     keyword?: string;
 }
 
@@ -174,7 +174,7 @@ export async function getProductTypes() {
 export async function postProducts(
     row: number,
     page: number,
-    type: string | null,
+    type: number | null,
     keyword: string | null
 ) {
     const data: GetProductData = { page, row };

@@ -14,7 +14,7 @@ import { ref, watch } from "vue";
 
 const row = ref(10);
 const page = ref(0);
-const type = ref<string | null>(null);
+const type = ref<number | null>(null);
 const keyword = ref<string | null>(null);
 const { data: typesData } = useRequest(getProductTypes);
 const { data: productsData, run: fetchProducts } = useRequest(
@@ -39,6 +39,8 @@ watch([row, page, type, keyword], () => {
             class="sm:w-[17rem] w-[49%]"
             v-model="type"
             :options="typesData?.data"
+            optionLabel="type"
+            optionValue="id"
             placeholder="类型"
             dropdownIcon="icon-boxes"
             showClear
