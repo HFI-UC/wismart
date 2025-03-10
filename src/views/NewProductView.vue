@@ -96,22 +96,14 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         return;
     }
     form.values.turnstileToken = turnstileToken.value;
-    if (!file.value) {
-        toast.add({
-            severity: "error",
-            summary: "错误",
-            detail: "请上传商品照片！",
-            life: 3000,
-        });
-        submitLoading.value = false;
-        return;
+    if (file.value) {
+        const uploadResponse = await uploadCOS(file.value);
+        if (!uploadResponse.success) {
+            submitLoading.value = false;
+            return;
+        }
+        form.values.image = uploadResponse.data;
     }
-    const uploadResponse = await uploadCOS(file.value);
-    if (!uploadResponse.success) {
-        submitLoading.value = false;
-        return;
-    }
-    form.values.image = uploadResponse.data;
     const response = await postNewProduct(form.values as NewProductData);
     if (response.success) {
         toast.add({
@@ -291,7 +283,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                         uploadIcon="icon-upload"
                                         auto
                                         chooseLabel="
-                                            上传照片
+                                            上传照片（可选）
                                         "
                                         class="m-3"
                                     ></FileUpload>
