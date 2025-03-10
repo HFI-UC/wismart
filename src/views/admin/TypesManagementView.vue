@@ -105,7 +105,7 @@ const onCreateEvent = async (form: FormSubmitEvent) => {
     }
 };
 
-const onDeleteEvent = async (type: string) => {
+const onDeleteEvent = async (type: number) => {
     const response = await postRemoveProductType(type);
     if (response.success) {
         toast.add({
