@@ -79,7 +79,7 @@ const resolver = ref(
             type: z.number({ message: "请填写此栏。" }),
             price: z.number({ message: "请填写此栏。" }),
             description: z.string().min(1, { message: "请填写此栏。" }),
-            stock: z.number({ message: "请填写此栏。" }).optional(),
+            stock: z.number({ message: "请填写此栏。" }).nullable(),
             isUnlimited: z.boolean({ message: "请填写此栏。" }),
         })
     )
