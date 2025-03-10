@@ -26,12 +26,13 @@ export interface Response {
 
 export interface NewProductData {
     name: string;
-    type: string;
+    type: number | null;
     price: number | null;
     description: string;
     image: string;
     stock: number | null;
     turnstileToken: string;
+    isUnlimited: boolean;
 }
 
 export interface GetProductData {
@@ -44,7 +45,7 @@ export interface GetProductData {
 export interface ChangeProductData {
     id: number;
     isVerified: boolean;
-    stock: number;
+    stock: number | null;
     sales: number;
     details: string;
 }
@@ -56,9 +57,10 @@ export interface ProductData {
     price: number;
     description: string;
     image: string;
-    stock: number;
+    stock: number | null;
     sales: number;
     isVerified: boolean;
+    isUnlimited: boolean;
     ownerId: number;
 }
 
@@ -209,7 +211,7 @@ export async function postCreateProductType(type: string) {
     return response.data;
 }
 
-export async function postRemoveProductType(type: string) {
+export async function postRemoveProductType(type: number) {
     const response = await axios.post<Response>("/api/product/types/remove", {
         type,
     });

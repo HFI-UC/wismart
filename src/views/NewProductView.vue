@@ -14,6 +14,7 @@ import Skeleton from "primevue/skeleton";
 import InputNumber from "primevue/inputnumber";
 import Button from "primevue/button";
 import FileUpload from "primevue/fileupload";
+import ToggleSwitch from "primevue/toggleswitch";
 import {
     postNewProduct,
     getVerifyLogin,
@@ -49,12 +50,13 @@ watch(
 
 const initialValues = ref<NewProductData>({
     name: "",
-    type: "",
+    type: null,
     price: null,
     description: "",
     image: "",
     stock: null,
     turnstileToken: "",
+    isUnlimited: false,
 });
 
 const src = ref<null | string>(null);
@@ -74,10 +76,11 @@ const resolver = ref(
     zodResolver(
         z.object({
             name: z.string().min(1, { message: "请填写此栏。" }),
-            type: z.string().min(1, { message: "请填写此栏。" }),
+            type: z.number({ message: "请填写此栏。" }),
             price: z.number({ message: "请填写此栏。" }),
             description: z.string().min(1, { message: "请填写此栏。" }),
-            stock: z.number({ message: "请填写此栏。" }),
+            stock: z.number({ message: "请填写此栏。" }).optional(),
+            isUnlimited: z.boolean({ message: "请填写此栏。" }),
         })
     )
 );
@@ -176,6 +179,8 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                     class="w-[17rem] sm:w-[20rem]"
                                     dropdownIcon="icon-boxes"
                                     :options="typesData?.data || []"
+                                    optionLabel="type"
+                                    optionValue="id"
                                     name="type"
                                     placeholder="商品类型"
                                 ></Select>
@@ -233,6 +238,28 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 >
                             </div>
                             <div class="flex flex-col gap-2">
+                                <div class="flex gap-2">
+                                    <p>无限库存</p>
+                                    <ToggleSwitch name="isUnlimited">
+                                    </ToggleSwitch>
+                                </div>
+                                <Message
+                                    v-if="$form.isUnlimited?.invalid"
+                                    severity="error"
+                                    size="small"
+                                    variant="simple"
+                                    >{{
+                                        $form.isUnlimited.error?.message
+                                    }}</Message
+                                >
+                            </div>
+                            <div
+                                class="flex flex-col gap-2"
+                                v-if="
+                                    $form.isUnlimited &&
+                                    !$form.isUnlimited.value
+                                "
+                            >
                                 <IconField>
                                     <InputNumber
                                         class="w-[17rem] sm:w-[20rem]"

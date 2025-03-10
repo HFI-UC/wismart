@@ -13,7 +13,7 @@ import Skeleton from "primevue/skeleton";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import { Form, type FormSubmitEvent } from "@primevue/forms";
-import { computed, ref, watch } from "vue";
+import {  ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import Message from "primevue/message";
@@ -23,13 +23,7 @@ import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { z } from "zod";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: types, run: fetchTypes } = useRequest(getProductTypes);
-const typesData = computed(() => {
-    const data: { type: string }[] = [];
-    const response: string[] = types.value?.data;
-    response.map((item) => data.push({ type: item }));
-    return data;
-});
+const { data: typesData, run: fetchTypes } = useRequest(getProductTypes);
 const toast = useToast();
 const initialValues = ref({
     type: "",
@@ -169,12 +163,12 @@ const onDeleteEvent = async (type: string) => {
         </Form>
     </Dialog>
     <div
-        v-if="types && types.success"
+        v-if="typesData && typesData.success"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
         <Card class="w-full">
             <template #content>
-                <DataTable class="w-full" :value="typesData">
+                <DataTable class="w-full" :value="typesData.data">
                     <template #header>
                         <div class="flex justify-between items-center w-full">
                             <h2 class="text-xl font-bold">商品类型</h2>
@@ -184,13 +178,14 @@ const onDeleteEvent = async (type: string) => {
                             ></Button>
                         </div>
                     </template>
+                    <Column field="id" header="ID"></Column>
                     <Column field="type" header="类型"></Column>
                     <Column header="操作">
                         <template #body="slotProps">
                             <Button
                                 icon="icon-trash-2"
                                 severity="danger"
-                                @click="onDeleteEvent(slotProps.data.type)"
+                                @click="onDeleteEvent(slotProps.data.id)"
                             ></Button>
                         </template>
                     </Column>

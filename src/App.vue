@@ -107,6 +107,7 @@ onMounted(async () => {
                 ></Button>
             </div>
         </div>
-        <RouterView class="my-8"></RouterView>
+        <div class="my-8">
+        <RouterView></RouterView></div>
     </div>
 </template>
