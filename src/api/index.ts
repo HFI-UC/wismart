@@ -20,8 +20,8 @@ export interface LoginData {
 
 export interface Response {
     success: boolean;
-    message?: string;
-    data?: any;
+    message: string;
+    data: any;
 }
 
 export interface NewProductData {
@@ -50,6 +50,11 @@ export interface ChangeProductData {
     details: string;
 }
 
+export interface BuyProductData {
+    id: number | null
+    count: number | null
+}
+
 export interface ProductData {
     id: number;
     name: string;
@@ -65,8 +70,8 @@ export interface ProductData {
 }
 
 export interface ProductType {
-    id: number
-    type: string
+    id: number;
+    type: string;
 }
 
 export async function postRegister(data: RegisterData) {
@@ -221,4 +226,14 @@ export async function postRemoveProductType(type: number) {
         type,
     });
     return response.data;
+}
+
+export async function postProductDetail(id: number) {
+    const response = await axios.post<Response>("/api/product/detail", { id });
+    return response.data;
+}
+
+export async function postBuyProduct(data: BuyProductData) {
+    const response = await axios.post<Response>("/api/product/buy", data)
+    return response.data
 }

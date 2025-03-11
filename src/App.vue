@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { RouterView, useRouter } from "vue-router";
 import Button from "primevue/button";
-import { onMounted, ref } from "vue";
 import Toast from "primevue/toast";
+import ConfirmDialog from "primevue/confirmdialog";
+import { onMounted, ref } from "vue";
 import { getLogout, getVerifyAdmin, getVerifyLogin } from "./api";
 import { useToast } from "primevue/usetoast";
 import { useRequest } from "vue-request";
@@ -60,6 +61,7 @@ onMounted(async () => {
 
 <template>
     <Toast></Toast>
+    <ConfirmDialog></ConfirmDialog>
     <div class="sm:mx-[3rem] sm:my-[2rem] mx-[2rem] my-[1.2rem]">
         <div class="flex w-full justify-between">
             <div>
@@ -108,6 +110,7 @@ onMounted(async () => {
             </div>
         </div>
         <div class="my-8">
-        <RouterView></RouterView></div>
+        <RouterView></RouterView>
+    </div>
     </div>
 </template>

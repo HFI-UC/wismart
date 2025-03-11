@@ -11,10 +11,12 @@ import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import Select from "primevue/select";
 import { computed, ref, watch } from "vue";
+import { useRouter } from "vue-router";
 
 const row = ref(10);
 const page = ref(0);
 const type = ref<number | null>(null);
+const router = useRouter()
 const keyword = ref<string | null>(null);
 const { data: typesData } = useRequest<{ data?: ProductType[] }>(getProductTypes);
 const types = computed(() => {
@@ -116,6 +118,7 @@ watch([row, page, type, keyword], () => {
                             class="w-full"
                             icon="icon-shopping-cart"
                             label="购买"
+                            @click="router.push(`/shop/checkout/${product.id}`)"
                         ></Button>
                     </div>
                 </template>

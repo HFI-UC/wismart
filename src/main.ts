@@ -6,6 +6,7 @@ import App from "./App.vue";
 import router from "./router";
 import { definePreset } from "@primeuix/themes";
 import ToastService from "primevue/toastservice";
+import ConfirmationService from 'primevue/confirmationservice';
 import zh_cn from "primelocale/zh-CN.json";
 
 const app = createApp(App);
@@ -65,5 +66,6 @@ app.use(PrimeVue, {
     locale: zh_cn["zh-CN"],
 });
 app.use(ToastService);
+app.use(ConfirmationService)
 app.use(router);
 app.mount("#app");
