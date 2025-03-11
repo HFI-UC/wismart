@@ -32,7 +32,7 @@ const { data: products, run: fetchProducts } = useRequest(getAllProducts);
 const productsData = computed(() =>
     products.value?.data.sort(
         (a, b) => Number(a.isVerified) - Number(b.isVerified)
-    )
+    ) || []
 );
 const toast = useToast();
 const router = useRouter();
@@ -119,6 +119,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
         v-if="adminData?.data && products && products.success"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
+        <p v-if="!productsData.length">无可用数据。</p>
         <Card class="md:w-[49%] w-full" v-for="product in productsData">
             <template #header>
                 <h2 class="mx-8 text-3xl font-bold my-8">
