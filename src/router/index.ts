@@ -5,7 +5,7 @@ import EmailVerifyView from "../views/EmailVerifyView.vue";
 import LoginView from "../views/LoginView.vue";
 import NewProductView from "../views/NewProductView.vue";
 import ShopView from "../views/ShopView.vue";
-import ProductVerifyView from "../views/admin/ProductVerifyView.vue";
+import ProductsManagementView from "../views/admin/ProductsManagementView.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import TypesManagementView from "../views/admin/TypesManagementView.vue";
 
@@ -43,8 +43,8 @@ const router = createRouter({
         //     component: ProductDetailView,
         // }
         {
-            path: "/product/verify",
-            component: ProductVerifyView,
+            path: "/product/management",
+            component: ProductsManagementView,
         },
         {
             path: "/product/types",

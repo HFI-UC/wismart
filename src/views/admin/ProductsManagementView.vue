@@ -2,11 +2,13 @@
 import { useRequest } from "vue-request";
 import {
     getAllProducts,
+    getProductTypes,
     getVerifyAdmin,
     getVerifyLogin,
     postChangeProduct,
     type ChangeProductData,
     type ProductData,
+    type ProductType,
 } from "../../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
@@ -18,6 +20,14 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
+const { data: types } = useRequest<{ data?: ProductType[] }>(getProductTypes);
+const typesData = computed(() => {
+    const data: Record<number, string> = {}
+    types.value?.data?.map((item) => {
+        data[item.id] = item.type
+    });
+    return data
+});
 const { data: products, run: fetchProducts } = useRequest(getAllProducts);
 const productsData = computed(() =>
     products.value?.data.sort(
@@ -104,12 +114,12 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
 </script>
 
 <template>
-    <h1 class="text-4xl font-bold my-8">商品审核</h1>
+    <h1 class="text-4xl font-bold my-8">商品管理</h1>
     <div
         v-if="adminData?.data && products && products.success"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
-        <Card class="sm:w-[49%] w-full" v-for="product in productsData">
+        <Card class="md:w-[49%] w-full" v-for="product in productsData">
             <template #header>
                 <h2 class="mx-8 text-3xl font-bold my-8">
                     {{ product.name }}
@@ -151,7 +161,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">商品类型：</b
-                            >{{ product.type }}
+                            >{{ typesData[product.type] || "未知" }}
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">已售：</b
@@ -181,7 +191,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         class="w-full"
                         severity="success"
                         icon="icon-check"
-                        label="通过"
+                        label="上架"
                         :loading="verifyLoading[product.id]"
                         @click="verifyProduct(true, product)"
                     ></Button>
@@ -197,5 +207,60 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             </template>
         </Card>
     </div>
-    <Skeleton v-else class="w-full min-h-[70vh] !rounded-xl"></Skeleton>
+    <div v-else class="w-full min-h-[70vh]">
+        <div class="flex flex-wrap items-center justify-between w-full gap-y-8">
+            <Card class="sm:w-[49%] w-full">
+                <template #header>
+                    <div class="flex flex-col gap-2 mx-8 my-8">
+                        <Skeleton class="!w-auto !h-[2rem]"></Skeleton>
+                        <Skeleton class="!w-[80%] !h-[2rem]"></Skeleton>
+                    </div>
+                </template>
+                <template #content>
+                    <div class="mx-3">
+                        <Skeleton
+                            class="!w-auto !h-[20rem] mt-4 mb-6"
+                        ></Skeleton>
+                        <div class="my-4 flex flex-col gap-4">
+                            <Skeleton class="!w-[90%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[85%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[90%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[75%] !h-[1.75rem]"></Skeleton>
+                        </div>
+                    </div>
+                </template>
+                <template #footer>
+                    <div class="flex mx-3 my-2 gap-4">
+                        <Skeleton class="w-full !h-[42px]"></Skeleton>
+                    </div>
+                </template>
+            </Card>
+            <Card class="sm:w-[49%] w-full">
+                <template #header>
+                    <div class="flex flex-col gap-2 mx-8 my-8">
+                        <Skeleton class="!w-auto !h-[2rem]"></Skeleton>
+                        <Skeleton class="!w-[80%] !h-[2rem]"></Skeleton>
+                    </div>
+                </template>
+                <template #content>
+                    <div class="mx-3">
+                        <Skeleton
+                            class="!w-auto !h-[20rem] mt-4 mb-6"
+                        ></Skeleton>
+                        <div class="my-4 flex flex-col gap-4">
+                            <Skeleton class="!w-[90%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[85%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[83%] !h-[1.75rem]"></Skeleton>
+                            <Skeleton class="!w-[85%] !h-[1.75rem]"></Skeleton>
+                        </div>
+                    </div>
+                </template>
+                <template #footer>
+                    <div class="flex mx-3 my-2 gap-4">
+                        <Skeleton class="w-full !h-[42px]"></Skeleton>
+                    </div>
+                </template>
+            </Card>
+        </div>
+    </div>
 </template>

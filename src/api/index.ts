@@ -53,7 +53,7 @@ export interface ChangeProductData {
 export interface ProductData {
     id: number;
     name: string;
-    type: string;
+    type: number;
     price: number;
     description: string;
     image: string;
@@ -62,6 +62,11 @@ export interface ProductData {
     isVerified: boolean;
     isUnlimited: boolean;
     ownerId: number;
+}
+
+export interface ProductType {
+    id: number
+    type: string
 }
 
 export async function postRegister(data: RegisterData) {

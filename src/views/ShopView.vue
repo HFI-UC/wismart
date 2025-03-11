@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRequest } from "vue-request";
-import { getProductTypes, postProducts } from "../api";
+import { getProductTypes, postProducts, type ProductType } from "../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Image from "primevue/image";
@@ -10,13 +10,20 @@ import InputText from "primevue/inputtext";
 import IconField from "primevue/iconfield";
 import InputIcon from "primevue/inputicon";
 import Select from "primevue/select";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 
 const row = ref(10);
 const page = ref(0);
 const type = ref<number | null>(null);
 const keyword = ref<string | null>(null);
-const { data: typesData } = useRequest(getProductTypes);
+const { data: typesData } = useRequest<{ data?: ProductType[] }>(getProductTypes);
+const types = computed(() => {
+    const data: Record<number, string> = {}
+    typesData.value?.data?.map((item) => {
+        data[item.id] = item.type
+    });
+    return data
+});
 const { data: productsData, run: fetchProducts } = useRequest(
     () => postProducts(row.value, page.value, type.value, keyword.value),
     { debounceInterval: 300 }
@@ -50,7 +57,7 @@ watch([row, page, type, keyword], () => {
         <div class="flex flex-wrap items-center justify-between w-full gap-y-8">
             <p v-if="!productsData.data.products.length">无可用数据。</p>
             <Card
-                class="sm:w-[49%] w-full"
+                class="md:w-[49%] w-full"
                 v-for="product in productsData.data.products"
             >
                 <template #header>
@@ -94,7 +101,7 @@ watch([row, page, type, keyword], () => {
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">商品类型：</b
-                                >{{ product.type }}
+                                >{{ types[product.type] || "未知" }}
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">已售：</b
@@ -123,7 +130,7 @@ watch([row, page, type, keyword], () => {
         ></Paginator>
     </div>
     <div v-else class="w-full min-h-[70vh]">
-        <div class="flex flex-wrap items-center justify-between w-full">
+        <div class="flex flex-wrap items-center justify-between w-full gap-y-8">
             <Card class="sm:w-[49%] w-full">
                 <template #header>
                     <div class="flex flex-col gap-2 mx-8 my-8">

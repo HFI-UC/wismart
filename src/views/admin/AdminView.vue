@@ -10,13 +10,13 @@ const router = useRouter();
     <h2 class="text-xl font-bold my-8">功能选择</h2>
     <div class="flex flex-wrap gap-2">
         <Button
-            label="商品审核"
-            @click="router.push('/product/verify')"
+            label="商品管理"
+            @click="router.push('/admin/product')"
             icon="icon-shield-check"
         ></Button>
         <Button
             label="商品类型管理"
-            @click="router.push('/product/types')"
+            @click="router.push('/admin/types')"
             icon="icon-boxes"
         ></Button>
     </div>
