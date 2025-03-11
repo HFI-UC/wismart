@@ -2,7 +2,6 @@ import { createApp } from "vue";
 import PrimeVue from "primevue/config";
 import Aura from "@primeuix/themes/aura";
 import "./style.css";
-import "lucide-static/font/lucide.css";
 import App from "./App.vue";
 import router from "./router";
 import { definePreset } from "@primeuix/themes";

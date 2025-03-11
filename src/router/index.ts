@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import RegisterView from "../views/RegisterView.vue";
-import EmailVerifyView from "../views/EmailVerifyView.vue";
-import LoginView from "../views/LoginView.vue";
+import RegisterView from "../views/user/RegisterView.vue";
+import EmailVerifyView from "../views/user/EmailVerifyView.vue";
+import LoginView from "../views/user/LoginView.vue";
 import NewProductView from "../views/NewProductView.vue";
 import ShopView from "../views/ShopView.vue";
 import ProductsManagementView from "../views/admin/ProductsManagementView.vue";
@@ -43,11 +43,11 @@ const router = createRouter({
         //     component: ProductDetailView,
         // }
         {
-            path: "/product/management",
+            path: "/admin/products",
             component: ProductsManagementView,
         },
         {
-            path: "/product/types",
+            path: "/admin/types",
             component: TypesManagementView,
         },
         {

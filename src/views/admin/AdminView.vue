@@ -11,7 +11,7 @@ const router = useRouter();
     <div class="flex flex-wrap gap-2">
         <Button
             label="商品管理"
-            @click="router.push('/admin/product')"
+            @click="router.push('/admin/products')"
             icon="icon-shield-check"
         ></Button>
         <Button
