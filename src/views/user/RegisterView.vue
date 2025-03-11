@@ -10,7 +10,7 @@ import InputIcon from "primevue/inputicon";
 import VueTurnstile from "vue-turnstile";
 import Card from "primevue/card";
 import Button from "primevue/button";
-import { postRegister, getVerifyLogin, type RegisterData } from "../api";
+import { postRegister, getVerifyLogin, type RegisterData } from "../../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { useRequest } from "vue-request";

@@ -11,7 +11,7 @@ import InputIcon from "primevue/inputicon";
 import VueTurnstile from "vue-turnstile";
 import Message from "primevue/message";
 import Button from "primevue/button";
-import { postLogin, getVerifyLogin, type LoginData } from "../api";
+import { postLogin, getVerifyLogin, type LoginData } from "../../api";
 import { useRequest } from "vue-request";
 
 const props = defineProps<{

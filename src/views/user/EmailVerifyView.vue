@@ -4,7 +4,7 @@ import { onMounted, ref } from "vue";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import ProgressSpinner from "primevue/progressspinner";
-import { postVerifyEmail } from "../api";
+import { postVerifyEmail } from "../../api";
 
 const props = defineProps<{
     token: string;
