@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRequest } from "vue-request";
-import { getProductTypes, postProducts, type ProductType } from "../api";
+import { getProductTypes, postProducts, type ProductType } from "../../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
 import Image from "primevue/image";
@@ -16,15 +16,17 @@ import { useRouter } from "vue-router";
 const row = ref(10);
 const page = ref(0);
 const type = ref<number | null>(null);
-const router = useRouter()
+const router = useRouter();
 const keyword = ref<string | null>(null);
-const { data: typesData } = useRequest<{ data?: ProductType[] }>(getProductTypes);
+const { data: typesData } = useRequest<{ data?: ProductType[] }>(
+    getProductTypes
+);
 const types = computed(() => {
-    const data: Record<number, string> = {}
+    const data: Record<number, string> = {};
     typesData.value?.data?.map((item) => {
-        data[item.id] = item.type
+        data[item.id] = item.type;
     });
-    return data
+    return data;
 });
 const { data: productsData, run: fetchProducts } = useRequest(
     () => postProducts(row.value, page.value, type.value, keyword.value),
@@ -41,7 +43,11 @@ watch([row, page, type, keyword], () => {
     <h1 class="text-4xl font-bold my-8">商店</h1>
     <div class="flex sm:gap-2 my-4 gap-[2%]">
         <IconField class="sm:w-[17rem] w-[49%]">
-            <InputText class="sm:w-[17rem] w-full" v-model="keyword" placeholder="搜索"></InputText>
+            <InputText
+                class="sm:w-[17rem] w-full"
+                v-model="keyword"
+                placeholder="搜索"
+            ></InputText>
             <InputIcon class="icon-search"></InputIcon>
         </IconField>
         <Select
@@ -56,7 +62,7 @@ watch([row, page, type, keyword], () => {
         ></Select>
     </div>
     <div v-if="productsData && productsData.success" class="w-full">
-        <div class="flex flex-wrap items-center justify-between w-full gap-y-8">
+        <div class="flex flex-wrap items-start justify-between w-full gap-y-8">
             <p v-if="!productsData.data.products.length">无可用数据。</p>
             <Card
                 class="md:w-[49%] w-full"
@@ -71,6 +77,7 @@ watch([row, page, type, keyword], () => {
                     <div class="mx-3">
                         <div class="w-full flex items-center justify-center">
                             <Image
+                                v-if="product.image"
                                 class="w-full h-[20rem] items-center justify-center mt-4 mb-6"
                                 preview
                             >
@@ -90,6 +97,15 @@ watch([row, page, type, keyword], () => {
                                     />
                                 </template>
                             </Image>
+                            <div
+                                v-else
+                                class="flex items-center justify-center h-[20rem] mt-4 mb-6"
+                            >
+                                <i
+                                    class="!text-[8em] text-gray-300 icon-image-off"
+                                >
+                                </i>
+                            </div>
                         </div>
                         <div class="my-4 flex flex-col gap-4">
                             <p class="text-lg">

@@ -8,7 +8,7 @@ import {
     type BuyProductData,
     type ProductData,
     type ProductType,
-} from "../api";
+} from "../../api";
 import { useRequest } from "vue-request";
 import { useToast } from "primevue/usetoast";
 import { useRoute, useRouter } from "vue-router";
@@ -18,6 +18,7 @@ import Skeleton from "primevue/skeleton";
 import Message from "primevue/message";
 import Button from "primevue/button";
 import InputNumber from "primevue/inputnumber";
+import VueTurnstile from "vue-turnstile";
 import { Form, type FormSubmitEvent } from "@primevue/forms";
 import { zodResolver } from "@primevue/forms/resolvers/zod";
 import { z } from "zod";
@@ -36,6 +37,7 @@ const typesData = computed(() => {
 const toast = useToast();
 const submitLoading = ref(false);
 const initialValues = ref<BuyProductData>({
+    turnstileToken: "",
     count: null,
     id: null,
 });
@@ -46,6 +48,7 @@ const resolver = ref(
         })
     )
 );
+const turnstileToken = ref("");
 const router = useRouter();
 onMounted(() => {
     if (!route.params.id) {
@@ -129,6 +132,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             >
                                 <Image
                                     class="w-full h-[20rem] items-center justify-center mt-4 mb-6"
+                                    v-if="productData.data.image"
                                     preview
                                 >
                                     <template #image>
@@ -147,6 +151,15 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                         />
                                     </template>
                                 </Image>
+                                <div
+                                    v-else
+                                    class="flex items-center justify-center h-[20rem] mt-4 mb-6"
+                                >
+                                    <i
+                                        class="!text-[8em] text-gray-300 icon-image-off"
+                                    >
+                                    </i>
+                                </div>
                             </div>
                             <div class="my-4 flex flex-col gap-4">
                                 <p class="text-lg">
@@ -177,9 +190,11 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 </p>
                             </div>
                         </div>
-                        <div class="flex flex-col gap-2 mx-3 my-4">
+                        <div
+                            class="flex flex-col items-center justify-center gap-2 my-4"
+                        >
                             <InputNumber
-                                class="w-full"
+                                class="w-[17rem] sm:w-[20rem]"
                                 placeholder="数量"
                                 name="count"
                                 :min="1"
@@ -211,6 +226,16 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                     ).toFixed(2)
                                 }}
                             </p>
+                        </div>
+                        <div
+                            class="flex flex-col my-4 w-full gap-4 items-center justify-center"
+                        >
+                            <p class="text-center text-sm">告诉我们你是人类</p>
+                            <VueTurnstile
+                                ref="turnstileRef"
+                                v-model="turnstileToken"
+                                site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
+                            ></VueTurnstile>
                         </div>
                         <div class="flex mx-3 gap-4">
                             <Button

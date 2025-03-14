@@ -21,7 +21,7 @@ import {
     type NewProductData,
     uploadCOS,
     getProductTypes,
-} from "../api";
+} from "../../api";
 import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 import { useRequest } from "vue-request";
@@ -86,6 +86,7 @@ const resolver = ref(
 );
 
 const turnstileToken = ref("");
+const turnstileRef = ref<any>();
 const submitLoading = ref(false);
 const toast = useToast();
 const router = useRouter();
@@ -124,6 +125,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
+        turnstileRef.value.reset()
         submitLoading.value = false;
     }
 };
@@ -307,6 +309,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 </p>
                                 <VueTurnstile
                                     v-model="turnstileToken"
+                                    ref="turnstileRef"
                                     site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
                                 ></VueTurnstile>
                             </div>

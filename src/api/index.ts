@@ -53,6 +53,7 @@ export interface ChangeProductData {
 export interface BuyProductData {
     id: number | null
     count: number | null
+    turnstileToken: string
 }
 
 export interface ProductData {
@@ -61,7 +62,7 @@ export interface ProductData {
     type: number;
     price: number;
     description: string;
-    image: string;
+    image: string | null;
     stock: number | null;
     sales: number;
     isVerified: boolean;

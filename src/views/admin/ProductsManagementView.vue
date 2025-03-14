@@ -22,17 +22,18 @@ const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
 const { data: types } = useRequest<{ data?: ProductType[] }>(getProductTypes);
 const typesData = computed(() => {
-    const data: Record<number, string> = {}
+    const data: Record<number, string> = {};
     types.value?.data?.map((item) => {
-        data[item.id] = item.type
+        data[item.id] = item.type;
     });
-    return data
+    return data;
 });
 const { data: products, run: fetchProducts } = useRequest(getAllProducts);
-const productsData = computed(() =>
-    products.value?.data.sort(
-        (a, b) => Number(a.isVerified) - Number(b.isVerified)
-    ) || []
+const productsData = computed(
+    () =>
+        products.value?.data.sort(
+            (a, b) => Number(a.isVerified) - Number(b.isVerified)
+        ) || []
 );
 const toast = useToast();
 const router = useRouter();
@@ -117,7 +118,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
     <h1 class="text-4xl font-bold my-8">商品管理</h1>
     <div
         v-if="adminData?.data && products && products.success"
-        class="flex flex-wrap items-center justify-between w-full gap-y-8"
+        class="flex flex-wrap items-start justify-between w-full gap-y-8"
     >
         <p v-if="!productsData.length">无可用数据。</p>
         <Card class="md:w-[49%] w-full" v-for="product in productsData">
@@ -131,6 +132,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                     <div class="w-full flex items-center justify-center">
                         <Image
                             class="w-full h-[20rem] items-center justify-center mt-4 mb-6 !rounded-xl"
+                            v-if="product.image"
                             preview
                         >
                             <template #image>
@@ -149,6 +151,13 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                                 />
                             </template>
                         </Image>
+                        <div
+                            v-else
+                            class="flex items-center justify-center h-[20rem] mt-4 mb-6"
+                        >
+                            <i class="!text-[8em] text-gray-300 icon-image-off">
+                            </i>
+                        </div>
                     </div>
                     <div class="my-4 flex flex-col gap-4">
                         <p class="text-lg">

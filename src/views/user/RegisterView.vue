@@ -70,6 +70,7 @@ const resolver = ref(
 );
 
 const turnstileToken = ref("");
+const turnstileRef = ref<any>()
 const submitLoading = ref(false);
 const toast = useToast();
 const router = useRouter();
@@ -99,6 +100,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
+        turnstileRef.value.reset()
         submitLoading.value = false;
     }
 };
@@ -211,6 +213,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                         >
                             <p class="text-center text-sm">告诉我们你是人类</p>
                             <VueTurnstile
+                                ref="turnstileRef"
                                 v-model="turnstileToken"
                                 site-key="0x4AAAAAAAiw3hAxhw1fzq4B"
                             ></VueTurnstile>
