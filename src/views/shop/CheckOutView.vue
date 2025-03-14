@@ -89,6 +89,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         return;
     }
     form.values.id = productData.value?.data.id;
+    form.values.turnstileToken = turnstileToken.value
     const response = await postBuyProduct(form.values as BuyProductData);
     if (response.success) {
         toast.add({
