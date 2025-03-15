@@ -11,7 +11,7 @@ import {
     type TradeDetailData,
     type UserProfile,
 } from "../../api";
-import { computed, onMounted, watch } from "vue";
+import { computed, onMounted, watch, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Card from "primevue/card";
@@ -22,22 +22,44 @@ const router = useRouter();
 const toast = useToast();
 
 const { data: loginData } = useRequest(getVerifyLogin);
-const { data: tradeData } = useRequest<{
-    data: TradeDetailData;
-    message?: string;
-}>(() => postTradeDetail(parseInt(route.params.id as string)));
-const { data: productData } = useRequest<{
-    data: ProductData;
-    message?: string;
-}>(() => postProductDetail(tradeData.value?.data.id || -1));
-const { data: types } = useRequest<{ data: ProductType[] }>(getProductTypes);
+
+const tradeData = ref<{ data: TradeDetailData; message?: string } | null>(null);
+const productData = ref<{ data: ProductData; message?: string } | null>(null);
+const types = ref<{ data: ProductType[] } | null>(null);
+const sellerData = ref<{ data: UserProfile } | null>(null);
+const buyerData = ref<{ data: UserProfile } | null>(null);
+
+const fetchTradeDetail = async () => {
+    const tradeResponse = await postTradeDetail(parseInt(route.params.id as string));
+    tradeData.value = tradeResponse;
+
+    if (tradeResponse.data) {
+        const productResponse = await postProductDetail(tradeResponse.data.id);
+        productData.value = productResponse;
+
+        const sellerResponse = await postUserProfile(tradeResponse.data.sellerId);
+        sellerData.value = sellerResponse;
+
+        const buyerResponse = await postUserProfile(tradeResponse.data.buyerId);
+        buyerData.value = buyerResponse;
+    }
+};
+
+const fetchProductTypes = async () => {
+    const typesResponse = await getProductTypes();
+    types.value = typesResponse;
+};
+
+onMounted(() => {
+    fetchTradeDetail();
+    fetchProductTypes();
+});
+
 const typesData = computed(() => {
     const data: Record<number, string> = {};
     types.value?.data?.map((item) => (data[item.id] = item.type));
     return data;
 });
-const { data: sellerData } = useRequest<{ data: UserProfile}>(() => postUserProfile(tradeData.value?.data.sellerId as number))
-const { data: buyerData } = useRequest<{ data: UserProfile}>(() => postUserProfile(tradeData.value?.data.buyerId as number))
 
 onMounted(() => {
     if (!route.params.id) {
