@@ -31,11 +31,11 @@ const sellerData = ref<{ data: UserProfile } | null>(null);
 const buyerData = ref<{ data: UserProfile } | null>(null);
 
 const fetchTradeDetail = async () => {
-    const tradeResponse = await postTradeDetail(parseInt(route.params.id as string));
+    const tradeResponse: { data: TradeDetailData; message?: string } = await postTradeDetail(parseInt(route.params.id as string));
     tradeData.value = tradeResponse;
 
     if (tradeResponse.data) {
-        const productResponse = await postProductDetail(tradeResponse.data.id);
+        const productResponse = await postProductDetail(tradeResponse.data.productId);
         productData.value = productResponse;
 
         const sellerResponse = await postUserProfile(tradeResponse.data.sellerId);
@@ -113,7 +113,7 @@ watch(
 <template>
     <div class="flex flex-col items-center justify-center w-full">
         <div class="w-[23rem] sm:w-[28rem]">
-            <Card v-if="tradeData?.data && productData?.data">
+            <Card v-if="tradeData?.data && productData?.data && buyerData?.data && sellerData?.data && types?.data">
                 <template #header>
                     <h1 class="text-center text-3xl font-bold my-8">
                         交易 #{{ tradeData.data.id }}
