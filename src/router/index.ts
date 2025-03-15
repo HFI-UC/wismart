@@ -9,6 +9,7 @@ import ProductsManagementView from "../views/admin/ProductsManagementView.vue";
 import AdminView from "../views/admin/AdminView.vue";
 import TypesManagementView from "../views/admin/TypesManagementView.vue";
 import CheckOutView from "../views/shop/CheckOutView.vue";
+import TradeDetailView from "../views/shop/TradeDetailView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -34,6 +35,10 @@ const router = createRouter({
         {
             path: "/product/new",
             component: NewProductView,
+        },
+        {
+            path: "/user/trade/detail/:id",
+            component: TradeDetailView,
         },
         {
             path: "/shop",
