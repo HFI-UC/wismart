@@ -188,11 +188,11 @@ watch(
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">买家：</b
-                                >{{ buyerData.data.username }} <a :href="`mailto:${buyerData.data.email}`"><{{ buyerData.data.email }}></a>
+                                >{{ buyerData.data.username }} <a class="text-orange-500 hover:text-orange-300 transition-colors duration-300" :href="`mailto:${buyerData.data.email}`"><{{ buyerData.data.email }}></a>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">卖家：</b
-                                >{{ sellerData.data.username }} <a :href="`mailto:${sellerData.data.email}`"><{{ sellerData.data.email }}></a>
+                                >{{ sellerData.data.username }} <a class="text-orange-500 hover:text-orange-300 transition-colors duration-300" :href="`mailto:${sellerData.data.email}`"><{{ sellerData.data.email }}></a>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">购买个数：</b
