@@ -98,7 +98,7 @@ watch(
 watch(
     () => tradeData.value,
     () => {
-        if (!tradeData.value?.message) {
+        if (tradeData.value?.message) {
             toast.add({
                 severity: "error",
                 summary: "错误",
