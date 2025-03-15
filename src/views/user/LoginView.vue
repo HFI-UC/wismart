@@ -63,7 +63,7 @@ const toast = useToast();
 
 const submitLoading = ref(false);
 const turnstileToken = ref("");
-const turnstileRef = ref()
+const turnstileRef = ref();
 const onSubmitEvent = async (form: FormSubmitEvent) => {
     submitLoading.value = true;
     if (!form.valid) {
@@ -93,7 +93,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
-        turnstileRef.value.reset()
+        turnstileRef.value.reset();
         submitLoading.value = false;
     }
 };

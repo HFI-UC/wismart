@@ -48,6 +48,7 @@ const resolver = ref(
         })
     )
 );
+const turnstileRef = ref();
 const turnstileToken = ref("");
 const router = useRouter();
 onMounted(() => {
@@ -89,7 +90,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
         return;
     }
     form.values.id = productData.value?.data.id;
-    form.values.turnstileToken = turnstileToken.value
+    form.values.turnstileToken = turnstileToken.value;
     const response = await postBuyProduct(form.values as BuyProductData);
     if (response.success) {
         toast.add({
@@ -110,6 +111,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             life: 3000,
         });
         submitLoading.value = false;
+        turnstileRef.value.reset();
     }
 };
 </script>
@@ -240,6 +242,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                         </div>
                         <div class="flex mx-3 gap-4">
                             <Button
+                                :disabled="turnstileToken == ''"
                                 class="w-full"
                                 type="submit"
                                 icon="icon-shopping-cart"

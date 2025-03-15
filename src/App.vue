@@ -110,7 +110,7 @@ onMounted(async () => {
             </div>
         </div>
         <div class="my-8">
-        <RouterView></RouterView>
-    </div>
+            <RouterView></RouterView>
+        </div>
     </div>
 </template>

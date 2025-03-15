@@ -51,9 +51,9 @@ export interface ChangeProductData {
 }
 
 export interface BuyProductData {
-    id: number | null
-    count: number | null
-    turnstileToken: string
+    id: number | null;
+    count: number | null;
+    turnstileToken: string;
 }
 
 export interface ProductData {
@@ -235,6 +235,6 @@ export async function postProductDetail(id: number) {
 }
 
 export async function postBuyProduct(data: BuyProductData) {
-    const response = await axios.post<Response>("/api/product/buy", data)
-    return response.data
+    const response = await axios.post<Response>("/api/product/buy", data);
+    return response.data;
 }

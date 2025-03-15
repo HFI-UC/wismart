@@ -125,7 +125,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
             detail: response.message,
             life: 3000,
         });
-        turnstileRef.value.reset()
+        turnstileRef.value.reset();
         submitLoading.value = false;
     }
 };
