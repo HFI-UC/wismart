@@ -16,6 +16,7 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Card from "primevue/card";
 import Image from "primevue/image";
+import Skeleton from "primevue/skeleton";
 
 const route = useRoute();
 const router = useRouter();
