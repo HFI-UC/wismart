@@ -31,14 +31,19 @@ const sellerData = ref<{ data: UserProfile } | null>(null);
 const buyerData = ref<{ data: UserProfile } | null>(null);
 
 const fetchTradeDetail = async () => {
-    const tradeResponse: { data: TradeDetailData; message?: string } = await postTradeDetail(parseInt(route.params.id as string));
+    const tradeResponse: { data: TradeDetailData; message?: string } =
+        await postTradeDetail(parseInt(route.params.id as string));
     tradeData.value = tradeResponse;
 
     if (tradeResponse.data) {
-        const productResponse = await postProductDetail(tradeResponse.data.productId);
+        const productResponse = await postProductDetail(
+            tradeResponse.data.productId
+        );
         productData.value = productResponse;
 
-        const sellerResponse = await postUserProfile(tradeResponse.data.sellerId);
+        const sellerResponse = await postUserProfile(
+            tradeResponse.data.sellerId
+        );
         sellerData.value = sellerResponse;
 
         const buyerResponse = await postUserProfile(tradeResponse.data.buyerId);
@@ -113,7 +118,15 @@ watch(
 <template>
     <div class="flex flex-col items-center justify-center w-full">
         <div class="w-[23rem] sm:w-[28rem]">
-            <Card v-if="tradeData?.data && productData?.data && buyerData?.data && sellerData?.data && types?.data">
+            <Card
+                v-if="
+                    tradeData?.data &&
+                    productData?.data &&
+                    buyerData?.data &&
+                    sellerData?.data &&
+                    types?.data
+                "
+            >
                 <template #header>
                     <h1 class="text-center text-3xl font-bold my-8">
                         交易 #{{ tradeData.data.id }}
@@ -175,15 +188,11 @@ watch(
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">买家：</b
-                                >{{
-                                    buyerData?.data.username
-                                }}
+                                >{{ buyerData.data.username }} <a :href="`mailto:${buyerData.data.email}`"><{{ buyerData.data.email }}></a>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">卖家：</b
-                                >{{
-                                    sellerData?.data.username
-                                }}
+                                >{{ sellerData.data.username }} <a :href="`mailto:${sellerData.data.email}`"><{{ sellerData.data.email }}></a>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">购买个数：</b
