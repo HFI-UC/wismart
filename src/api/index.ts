@@ -50,10 +50,28 @@ export interface ChangeProductData {
     details: string;
 }
 
+export interface TradeDetailData {
+    id: number
+    buyerId: number
+    sellerId: number
+    buyerEmail: string
+    sellerEmail: string
+    productId: number
+    count: number
+    total: number
+    status: "pending" | "completed" | "canceled"
+}
+
 export interface BuyProductData {
     id: number | null;
     count: number | null;
     turnstileToken: string;
+}
+
+export interface UserProfile {
+    id: number
+    username: string
+    email: string
 }
 
 export interface ProductData {
@@ -237,4 +255,14 @@ export async function postProductDetail(id: number) {
 export async function postBuyProduct(data: BuyProductData) {
     const response = await axios.post<Response>("/api/product/buy", data);
     return response.data;
+}
+
+export async function postTradeDetail(id: number) {
+    const response = await axios.post<Response>("/api/trade/detail", { id })
+    return response.data
+}
+
+export async function postUserProfile(id: number) {
+    const response = await axios.post<Response>("/api/user/profile", { id})
+    return response.data
 }

@@ -25,7 +25,7 @@ import { z } from "zod";
 
 const route = useRoute();
 const { data: loginData } = useRequest(getVerifyLogin);
-const { data: productData } = useRequest<{ data: ProductData }>(() =>
+const { data: productData } = useRequest<{ data: ProductData, message?: string }>(() =>
     postProductDetail(parseInt(route.params.id as string))
 );
 const { data: types } = useRequest<{ data: ProductType[] }>(getProductTypes);
@@ -79,6 +79,19 @@ watch(
                     )}`
                 );
             }, 3000);
+        }
+    }
+);
+watch(
+    () => productData.value,
+    () => {
+        if (!productData.value?.message) {
+            toast.add({
+                severity: "error",
+                summary: "错误",
+                detail: productData.value?.message,
+                life: 3000,
+            });
         }
     }
 );
