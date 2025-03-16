@@ -3,6 +3,7 @@ import { useRequest } from "vue-request";
 import {
     getProductTypes,
     getVerifyLogin,
+    postChangeTrade,
     postProductDetail,
     postTradeDetail,
     postUserProfile,
@@ -16,6 +17,8 @@ import { useRoute, useRouter } from "vue-router";
 import { useToast } from "primevue/usetoast";
 import Card from "primevue/card";
 import Image from "primevue/image";
+import Button from "primevue/button";
+import Tag from "primevue/tag";
 import Skeleton from "primevue/skeleton";
 
 const route = useRoute();
@@ -100,19 +103,44 @@ watch(
     }
 );
 
-watch(
-    () => tradeData.value,
-    () => {
-        if (tradeData.value?.message) {
-            toast.add({
-                severity: "error",
-                summary: "错误",
-                detail: tradeData.value?.message,
-                life: 3000,
-            });
-        }
+const tagValueMapping: Record<string, string> = {
+    pending: "等待中",
+    canceled: "已取消",
+    completed: "已完成",
+};
+
+const tagSeverityMapping: Record<string, string> = {
+    pending: "info",
+    canceled: "danger",
+    completed: "success",
+};
+
+const submitLoading = ref(false)
+
+const onChangeEvent = async (data: boolean) => {
+    if (!tradeData.value) return;
+    submitLoading.value = true
+    const status = data ? "completed" : "canceled"
+    const response = await postChangeTrade({ id: tradeData.value.data.id, status })
+    if (response.success) {
+        toast.add({
+            severity: "success",
+            summary: "成功",
+            detail: response.message,
+            life: 3000,
+        });
+        submitLoading.value = false;
+        fetchTradeDetail();
+    } else {
+        toast.add({
+            severity: "error",
+            summary: "错误",
+            detail: response.message,
+            life: 3000,
+        });
+        submitLoading.value = false;
     }
-);
+}
 </script>
 
 <template>
@@ -188,11 +216,19 @@ watch(
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">买家：</b
-                                >{{ buyerData.data.username }} <<a class="text-orange-400 hover:text-orange-300 transition-colors duration-300" :href="`mailto:${buyerData.data.email}`">{{ buyerData.data.email }}</a>>
+                                >{{ buyerData.data.username }} <<a
+                                    class="text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                                    :href="`mailto:${buyerData.data.email}`"
+                                    >{{ buyerData.data.email }}</a
+                                >>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">卖家：</b
-                                >{{ sellerData.data.username }} <<a class="text-orange-400 hover:text-orange-300 transition-colors duration-300" :href="`mailto:${sellerData.data.email}`">{{ sellerData.data.email }}</a>>
+                                >{{ sellerData.data.username }} <<a
+                                    class="text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                                    :href="`mailto:${sellerData.data.email}`"
+                                    >{{ sellerData.data.email }}</a
+                                >>
                             </p>
                             <p class="text-lg">
                                 <b class="font-bold">购买个数：</b
@@ -203,7 +239,38 @@ watch(
                                     tradeData.data.total.toFixed(2)
                                 }}
                             </p>
+                            <p class="text-lg">
+                                <b class="font-bold">状态：</b>
+                                <Tag
+                                    :severity="
+                                        tagSeverityMapping[tradeData.data.status]
+                                    "
+                                    :value="
+                                        tagValueMapping[tradeData.data.status]
+                                    "
+                                ></Tag>
+                            </p>
                         </div>
+                    </div>
+                </template>
+                <template #footer>
+                    <div v-if="tradeData.data.status == 'pending'" class="flex mx-3 gap-4">
+                        <Button
+                            class="w-full"
+                            icon="icon-check"
+                            severity="success"
+                            label="完成交易"
+                            :loading="submitLoading"
+                            @click="onChangeEvent(true)"
+                        ></Button>
+                        <Button
+                            class="w-full"
+                            icon="icon-x"
+                            severity="danger"
+                            label="取消交易"
+                            :loading="submitLoading"
+                            @click="onChangeEvent(false)"
+                        ></Button>
                     </div>
                 </template>
             </Card>

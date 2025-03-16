@@ -50,6 +50,16 @@ export interface ChangeProductData {
     details: string;
 }
 
+export interface ChangeProductTypeData {
+    id: number;
+    type: string
+}
+
+export interface ChangeTradeData {
+    id: number;
+    status: string
+}
+
 export interface TradeDetailData {
     id: number
     buyerId: number
@@ -264,5 +274,15 @@ export async function postTradeDetail(id: number) {
 
 export async function postUserProfile(id: number) {
     const response = await axios.post<Response>("/api/user/profile", { id})
+    return response.data
+}
+
+export async function postChangeProductType(data: ChangeProductTypeData) {
+    const response = await axios.post<Response>("/api/product/types/change", data)
+    return response.data
+}
+
+export async function postChangeTrade(data: ChangeTradeData) {
+    const response = await axios.post<Response>("/api/trade/change", data)
     return response.data
 }

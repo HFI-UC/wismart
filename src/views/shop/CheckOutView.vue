@@ -82,20 +82,6 @@ watch(
         }
     }
 );
-watch(
-    () => productData.value,
-    () => {
-        if (!productData.value?.message) {
-            toast.add({
-                severity: "error",
-                summary: "错误",
-                detail: productData.value?.message,
-                life: 3000,
-            });
-        }
-    }
-);
-
 const onSubmitEvent = async (form: FormSubmitEvent) => {
     submitLoading.value = true;
     if (!form.valid) {
