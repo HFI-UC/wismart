@@ -4,6 +4,7 @@ import {
     getProductTypes,
     getVerifyAdmin,
     getVerifyLogin,
+    postChangeProductType,
     postCreateProductType,
     postRemoveProductType,
 } from "../../api";
@@ -36,6 +37,9 @@ const resolver = ref(
     )
 );
 const visible = ref(false);
+const changeVisible = ref(false);
+const changeId = ref<number | null>(null);
+const changeLoading = ref(false);
 const router = useRouter();
 watch(
     () => loginData.value,
@@ -125,11 +129,41 @@ const onDeleteEvent = async (type: number) => {
         });
     }
 };
+
+const onChangeEvent = async (form: FormSubmitEvent) => {
+    changeLoading.value = true;
+    if (!form.valid || !changeId.value) {
+        changeLoading.value = false;
+        return;
+    }
+    const response = await postChangeProductType({ id: changeId.value, type: form.values.type});
+    if (response.success) {
+        toast.add({
+            severity: "success",
+            summary: "成功",
+            detail: response.message,
+            life: 3000,
+        });
+        changeLoading.value = false;
+        form.reset();
+        fetchTypes();
+        changeVisible.value = false;
+        changeId.value = null
+    } else {
+        toast.add({
+            severity: "error",
+            summary: "错误",
+            detail: response.message,
+            life: 3000,
+        });
+        changeLoading.value = false;
+    }
+}
 </script>
 
 <template>
     <h1 class="text-4xl font-bold my-8">商品类型管理</h1>
-    <Dialog v-model:visible="visible">
+    <Dialog v-model:visible="visible" header="新建类型">
         <Form
             v-slot="$form"
             :initialValues
@@ -162,6 +196,39 @@ const onDeleteEvent = async (type: number) => {
             </div>
         </Form>
     </Dialog>
+    <Dialog v-model:visible="changeVisible" header="修改类型">
+        <Form
+            v-slot="$form"
+            :initialValues
+            :resolver
+            @submit="onChangeEvent"
+            autocomplete="off"
+        >
+            <div class="flex flex-col gap-4 items-center justify-center">
+                <div class="flex flex-col gap-2">
+                    <InputText
+                        class="w-[17rem] sm:w-[20rem]"
+                        name="type"
+                        type="text"
+                        placeholder="新类型"
+                    ></InputText>
+                    <Message
+                        v-if="$form.type?.invalid"
+                        severity="error"
+                        size="small"
+                        variant="simple"
+                        >{{ $form.type.error?.message }}</Message
+                    >
+                </div>
+                <Button
+                    type="submit"
+                    label="更改"
+                    icon="icon-plus"
+                    :loading="changeLoading"
+                ></Button>
+            </div>
+        </Form>
+    </Dialog>
     <div
         v-if="typesData && typesData.success"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
@@ -186,6 +253,13 @@ const onDeleteEvent = async (type: number) => {
                                 icon="icon-trash-2"
                                 severity="danger"
                                 @click="onDeleteEvent(slotProps.data.id)"
+                            ></Button>
+                            <Button
+                                icon="icon-trash-2"
+                                @click="
+                                        (changeId = slotProps.data.id),
+                                        (changeVisible = true)
+                                "
                             ></Button>
                         </template>
                     </Column>
