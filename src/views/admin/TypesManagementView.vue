@@ -230,7 +230,7 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
         </Form>
     </Dialog>
     <div
-        v-if="typesData && typesData.success"
+        v-if="typesData && typesData.success && loginData?.data"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
         <Card class="w-full">
