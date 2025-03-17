@@ -250,9 +250,9 @@ export async function postCreateProductType(type: string) {
     return response.data;
 }
 
-export async function postRemoveProductType(type: number) {
+export async function postRemoveProductType(id: number) {
     const response = await axios.post<Response>("/api/product/types/remove", {
-        type,
+        id,
     });
     return response.data;
 }
