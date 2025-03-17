@@ -17,6 +17,7 @@ const toggleColorScheme = () => {
     root.classList.toggle("p-dark");
     iconClass.value = color == "white" ? "icon-sun" : "icon-moon";
 };
+const sha = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 7);
 
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
@@ -120,4 +121,19 @@ onMounted(async () => {
             <RouterView></RouterView>
         </div>
     </div>
+    <footer class="flex flex-col gap-2 items-center justify-center p-8 bg-gray-500 text-white">
+        <p>
+            由 MAKERs' & WisMart 共同编写。
+        </p>
+        <p>
+           版权所有 © MAKERs' & WisMart 2025，保留所有权利。 
+        </p>
+        <p class="flex flex-wrap gap-1 item-center">
+            构建<a
+                :href="`https://github.com/HFI-UC/hfi-utility-center/commit/${sha}`"
+                class="flex items-center gap-1 text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                ><i class="icon-git-commit-horizontal"></i> {{ sha }}</a
+            >。
+        </p>
+    </footer>
 </template>
