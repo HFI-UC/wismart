@@ -193,10 +193,9 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             </div>
                         </div>
                         <div
-                            class="flex flex-col items-center justify-center gap-2 my-4"
+                            class="flex flex-col items-center justify-center gap-2 mx-3 my-4"
                         >
                             <InputNumber
-                                class="w-[17rem] sm:w-[20rem]"
                                 placeholder="数量"
                                 name="count"
                                 :min="1"
@@ -204,12 +203,6 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 showButtons
                                 buttonLayout="horizontal"
                             >
-                                <template #incrementicon>
-                                    <span class="icon-plus" />
-                                </template>
-                                <template #decrementicon>
-                                    <span class="icon-minus" />
-                                </template>
                             </InputNumber>
                             <Message
                                 v-if="$form.count?.invalid"
