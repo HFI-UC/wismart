@@ -50,7 +50,7 @@ watch(
             setTimeout(() => {
                 router.push(
                     `/user/login?callback=${encodeURIComponent(
-                        "/product/verify"
+                        "/admin/verify"
                     )}`
                 );
             }, 3000);

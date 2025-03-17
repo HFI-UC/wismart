@@ -54,7 +54,7 @@ watch(
             setTimeout(() => {
                 router.push(
                     `/user/login?callback=${encodeURIComponent(
-                        "/product/types"
+                        "/admin/types"
                     )}`
                 );
             }, 3000);
