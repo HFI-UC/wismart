@@ -121,7 +121,7 @@ onMounted(async () => {
             <RouterView></RouterView>
         </div>
     </div>
-    <footer class="flex flex-col gap-2 items-center justify-center p-8 bg-gray-500 text-white">
+    <footer class="flex flex-col gap-2 items-center justify-center p-8 bg-zinc-600 text-white">
         <p>
             由 MAKERs' & WisMart 共同编写。
         </p>
