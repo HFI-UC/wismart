@@ -243,6 +243,11 @@ export async function postChangeProduct(product: ChangeProductData) {
     return response.data;
 }
 
+export async function postRemoveProduct(id: number) {
+    const response = await axios.post<Response>("/api/product/remove", { id })
+    return response.data
+}
+
 export async function postCreateProductType(type: string) {
     const response = await axios.post<Response>("/api/product/types/new", {
         type,

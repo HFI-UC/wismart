@@ -6,6 +6,7 @@ import {
     getVerifyAdmin,
     getVerifyLogin,
     postChangeProduct,
+    postRemoveProduct,
     type ChangeProductData,
     type ProductData,
     type ProductType,
@@ -17,6 +18,7 @@ import Skeleton from "primevue/skeleton";
 import Tag from "primevue/tag";
 import { computed, ref, watch } from "vue";
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
@@ -37,6 +39,7 @@ const productsData = computed(
 );
 const toast = useToast();
 const router = useRouter();
+const confirm = useConfirm();
 watch(
     () => loginData.value,
     () => {
@@ -77,15 +80,53 @@ watch(
 
 const verifyLoading = ref<boolean[]>([]);
 const rejectLoading = ref<boolean[]>([]);
+const deleteLoading = ref(false);
 
+const deleteProduct = (product: ProductData) => {
+    confirm.require({
+        message: "你确定要删除该产品吗？",
+        header: "确认",
+        icon: "icon-triangle-alert",
+        rejectProps: {
+            label: "取消",
+            severity: "secondary",
+            outlined: true,
+        },
+        acceptProps: {
+            label: "确认",
+        },
+        accept: async () => {
+            deleteLoading.value = true;
+            const response = await postRemoveProduct(product.id);
+            if (response.success) {
+                toast.add({
+                    severity: "success",
+                    summary: "成功",
+                    detail: response.message,
+                    life: 3000,
+                });
+                deleteLoading.value = false;
+                fetchProducts();
+            } else {
+                toast.add({
+                    severity: "error",
+                    summary: "错误",
+                    detail: response.message,
+                    life: 3000,
+                });
+                deleteLoading.value = false;
+            }
+        },
+    });
+};
 const verifyProduct = async (isVerified: boolean, product: ProductData) => {
     if (isVerified) verifyLoading.value[product.id] = true;
     else rejectLoading.value[product.id] = true;
     const newProduct: ChangeProductData = {
         ...product,
         details: isVerified
-            ? `你的商品 ${product.name} 已上架。`
-            : `你的商品 ${product.name} 已下架。`,
+            ? `你的商品“${product.name}”已上架。`
+            : `你的商品“${product.name}”已下架。`,
     };
     newProduct.isVerified = isVerified;
     const response = await postChangeProduct(newProduct);
@@ -212,6 +253,15 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         label="下架"
                         :loading="rejectLoading[product.id]"
                         @click="verifyProduct(false, product)"
+                    ></Button>
+                    <Button
+                        class="w-full"
+                        severity="danger"
+                        icon="icon-x"
+                        label="删除"
+                        outlined
+                        :loading="rejectLoading[product.id]"
+                        @click="deleteProduct(product)"
                     ></Button>
                 </div>
             </template>
