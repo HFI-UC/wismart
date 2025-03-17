@@ -220,6 +220,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                             >{{ product.ownerId }}
                         </p>
                         <p class="text-lg">
+                            <b class="font-bold">商品 ID：</b
+                            >{{ product.id }}
+                        </p>
+                        <p class="text-lg">
                             <b class="font-bold">状态：</b>
                             <Tag
                                 :severity="
