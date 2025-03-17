@@ -223,7 +223,7 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
                 <Button
                     type="submit"
                     label="更改"
-                    icon="icon-plus"
+                    icon="icon-pen"
                     :loading="changeLoading"
                 ></Button>
             </div>
