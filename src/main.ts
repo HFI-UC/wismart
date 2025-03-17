@@ -36,7 +36,7 @@ app.use(PrimeVue, {
                             activeColor: "{orange.800}",
                         },
                         highlight: {
-                            background: "{orange.950}",
+                            background: "{orange.800}",
                             focusBackground: "{orange.700}",
                             color: "#ffffff",
                             focusColor: "#ffffff",
