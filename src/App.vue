@@ -130,7 +130,7 @@ onMounted(async () => {
         </p>
         <p class="flex flex-wrap gap-1 item-center">
             构建<a
-                :href="`https://github.com/HFI-UC/hfi-utility-center/commit/${sha}`"
+                :href="`https://github.com/SilianZ/wismart/commit/${sha}`"
                 class="flex items-center gap-1 text-orange-400 hover:text-orange-300 transition-colors duration-300"
                 ><i class="icon-git-commit-horizontal"></i> {{ sha }}</a
             >。
