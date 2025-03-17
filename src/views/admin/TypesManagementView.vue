@@ -249,18 +249,19 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
                     <Column field="type" header="类型"></Column>
                     <Column header="操作">
                         <template #body="slotProps">
+                            <div class="flex gap-2">
                             <Button
                                 icon="icon-trash-2"
                                 severity="danger"
                                 @click="onDeleteEvent(slotProps.data.id)"
                             ></Button>
                             <Button
-                                icon="icon-trash-2"
+                                icon="icon-pen"
                                 @click="
                                         (changeId = slotProps.data.id),
                                         (changeVisible = true)
                                 "
-                            ></Button>
+                            ></Button></div>
                         </template>
                     </Column>
                 </DataTable>
