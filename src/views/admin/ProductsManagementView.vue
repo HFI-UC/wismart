@@ -78,11 +78,12 @@ watch(
     }
 );
 
-const verifyLoading = ref<boolean[]>([]);
+const acceptLoading = ref<boolean[]>([]);
 const rejectLoading = ref<boolean[]>([]);
-const deleteLoading = ref(false);
+const deleteLoading = ref<boolean[]>([]);
 
 const deleteProduct = (product: ProductData) => {
+    deleteLoading.value[product.id] = true;
     confirm.require({
         message: "你确定要删除该产品吗？",
         header: "确认",
@@ -93,10 +94,10 @@ const deleteProduct = (product: ProductData) => {
             outlined: true,
         },
         acceptProps: {
+            severity: 'danger',
             label: "确认",
         },
         accept: async () => {
-            deleteLoading.value = true;
             const response = await postRemoveProduct(product.id);
             if (response.success) {
                 toast.add({
@@ -105,7 +106,7 @@ const deleteProduct = (product: ProductData) => {
                     detail: response.message,
                     life: 3000,
                 });
-                deleteLoading.value = false;
+                deleteLoading.value[product.id] = false;
                 fetchProducts();
             } else {
                 toast.add({
@@ -114,13 +115,13 @@ const deleteProduct = (product: ProductData) => {
                     detail: response.message,
                     life: 3000,
                 });
-                deleteLoading.value = false;
+                deleteLoading.value[product.id] = false;
             }
         },
     });
 };
 const verifyProduct = async (isVerified: boolean, product: ProductData) => {
-    if (isVerified) verifyLoading.value[product.id] = true;
+    if (isVerified) acceptLoading.value[product.id] = true;
     else rejectLoading.value[product.id] = true;
     const newProduct: ChangeProductData = {
         ...product,
@@ -137,7 +138,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        if (isVerified) verifyLoading.value[product.id] = false;
+        if (isVerified) acceptLoading.value[product.id] = false;
         else rejectLoading.value[product.id] = false;
     } else {
         toast.add({
@@ -146,10 +147,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        if (isVerified) verifyLoading.value[product.id] = false;
+        if (isVerified) acceptLoading.value[product.id] = false;
         else rejectLoading.value[product.id] = false;
     }
-    if (isVerified) verifyLoading.value[product.id] = false;
+    if (isVerified) acceptLoading.value[product.id] = false;
     else rejectLoading.value[product.id] = false;
     fetchProducts();
 };
@@ -243,7 +244,8 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         severity="success"
                         icon="icon-check"
                         label="上架"
-                        :loading="verifyLoading[product.id]"
+                        :disabled="rejectLoading[product.id] || deleteLoading[product.id]"
+                        :loading="acceptLoading[product.id]"
                         @click="verifyProduct(true, product)"
                     ></Button>
                     <Button
@@ -251,6 +253,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         severity="danger"
                         icon="icon-x"
                         label="下架"
+                        :disabled="acceptLoading[product.id] || deleteLoading[product.id]"
                         :loading="rejectLoading[product.id]"
                         @click="verifyProduct(false, product)"
                     ></Button>
@@ -260,7 +263,8 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         icon="icon-x"
                         label="删除"
                         outlined
-                        :loading="rejectLoading[product.id]"
+                        :disabled="acceptLoading[product.id] || rejectLoading[product.id]"
+                        :loading="deleteLoading[product.id]"
                         @click="deleteProduct(product)"
                     ></Button>
                 </div>
