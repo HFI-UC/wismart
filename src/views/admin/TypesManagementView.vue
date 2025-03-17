@@ -53,9 +53,7 @@ watch(
             });
             setTimeout(() => {
                 router.push(
-                    `/user/login?callback=${encodeURIComponent(
-                        "/admin/types"
-                    )}`
+                    `/user/login?callback=${encodeURIComponent("/admin/types")}`
                 );
             }, 3000);
         }
@@ -136,7 +134,10 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
         changeLoading.value = false;
         return;
     }
-    const response = await postChangeProductType({ id: changeId.value, type: form.values.type});
+    const response = await postChangeProductType({
+        id: changeId.value,
+        type: form.values.type,
+    });
     if (response.success) {
         toast.add({
             severity: "success",
@@ -148,7 +149,7 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
         form.reset();
         fetchTypes();
         changeVisible.value = false;
-        changeId.value = null
+        changeId.value = null;
     } else {
         toast.add({
             severity: "error",
@@ -158,7 +159,7 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
         });
         changeLoading.value = false;
     }
-}
+};
 </script>
 
 <template>
@@ -250,18 +251,19 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
                     <Column header="操作">
                         <template #body="slotProps">
                             <div class="flex gap-2">
-                            <Button
-                                icon="icon-trash-2"
-                                severity="danger"
-                                @click="onDeleteEvent(slotProps.data.id)"
-                            ></Button>
-                            <Button
-                                icon="icon-pen"
-                                @click="
+                                <Button
+                                    icon="icon-trash-2"
+                                    severity="danger"
+                                    @click="onDeleteEvent(slotProps.data.id)"
+                                ></Button>
+                                <Button
+                                    icon="icon-pen"
+                                    @click="
                                         (changeId = slotProps.data.id),
-                                        (changeVisible = true)
-                                "
-                            ></Button></div>
+                                            (changeVisible = true)
+                                    "
+                                ></Button>
+                            </div>
                         </template>
                     </Column>
                 </DataTable>

@@ -115,13 +115,16 @@ const tagSeverityMapping: Record<string, string> = {
     completed: "success",
 };
 
-const submitLoading = ref(false)
+const submitLoading = ref(false);
 
 const onChangeEvent = async (data: boolean) => {
     if (!tradeData.value) return;
-    submitLoading.value = true
-    const status = data ? "completed" : "canceled"
-    const response = await postChangeTrade({ id: tradeData.value.data.id, status })
+    submitLoading.value = true;
+    const status = data ? "completed" : "canceled";
+    const response = await postChangeTrade({
+        id: tradeData.value.data.id,
+        status,
+    });
     if (response.success) {
         toast.add({
             severity: "success",
@@ -140,7 +143,7 @@ const onChangeEvent = async (data: boolean) => {
         });
         submitLoading.value = false;
     }
-}
+};
 </script>
 
 <template>
@@ -243,7 +246,9 @@ const onChangeEvent = async (data: boolean) => {
                                 <b class="font-bold">状态：</b>
                                 <Tag
                                     :severity="
-                                        tagSeverityMapping[tradeData.data.status]
+                                        tagSeverityMapping[
+                                            tradeData.data.status
+                                        ]
                                     "
                                     :value="
                                         tagValueMapping[tradeData.data.status]
@@ -254,7 +259,10 @@ const onChangeEvent = async (data: boolean) => {
                     </div>
                 </template>
                 <template #footer>
-                    <div v-if="tradeData.data.status == 'pending'" class="flex mx-3 gap-4">
+                    <div
+                        v-if="tradeData.data.status == 'pending'"
+                        class="flex mx-3 gap-4"
+                    >
                         <Button
                             class="w-full"
                             icon="icon-check"

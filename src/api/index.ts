@@ -52,24 +52,24 @@ export interface ChangeProductData {
 
 export interface ChangeProductTypeData {
     id: number;
-    type: string
+    type: string;
 }
 
 export interface ChangeTradeData {
     id: number;
-    status: string
+    status: string;
 }
 
 export interface TradeDetailData {
-    id: number
-    buyerId: number
-    sellerId: number
-    buyerEmail: string
-    sellerEmail: string
-    productId: number
-    count: number
-    total: number
-    status: "pending" | "completed" | "canceled"
+    id: number;
+    buyerId: number;
+    sellerId: number;
+    buyerEmail: string;
+    sellerEmail: string;
+    productId: number;
+    count: number;
+    total: number;
+    status: "pending" | "completed" | "canceled";
 }
 
 export interface BuyProductData {
@@ -79,9 +79,9 @@ export interface BuyProductData {
 }
 
 export interface UserProfile {
-    id: number
-    username: string
-    email: string
+    id: number;
+    username: string;
+    email: string;
 }
 
 export interface ProductData {
@@ -244,8 +244,8 @@ export async function postChangeProduct(product: ChangeProductData) {
 }
 
 export async function postRemoveProduct(id: number) {
-    const response = await axios.post<Response>("/api/product/remove", { id })
-    return response.data
+    const response = await axios.post<Response>("/api/product/remove", { id });
+    return response.data;
 }
 
 export async function postCreateProductType(type: string) {
@@ -273,21 +273,24 @@ export async function postBuyProduct(data: BuyProductData) {
 }
 
 export async function postTradeDetail(id: number) {
-    const response = await axios.post<Response>("/api/trade/detail", { id })
-    return response.data
+    const response = await axios.post<Response>("/api/trade/detail", { id });
+    return response.data;
 }
 
 export async function postUserProfile(id: number) {
-    const response = await axios.post<Response>("/api/user/profile", { id})
-    return response.data
+    const response = await axios.post<Response>("/api/user/profile", { id });
+    return response.data;
 }
 
 export async function postChangeProductType(data: ChangeProductTypeData) {
-    const response = await axios.post<Response>("/api/product/types/change", data)
-    return response.data
+    const response = await axios.post<Response>(
+        "/api/product/types/change",
+        data
+    );
+    return response.data;
 }
 
 export async function postChangeTrade(data: ChangeTradeData) {
-    const response = await axios.post<Response>("/api/trade/change", data)
-    return response.data
+    const response = await axios.post<Response>("/api/trade/change", data);
+    return response.data;
 }

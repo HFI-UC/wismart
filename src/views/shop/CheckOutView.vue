@@ -25,9 +25,10 @@ import { z } from "zod";
 
 const route = useRoute();
 const { data: loginData } = useRequest(getVerifyLogin);
-const { data: productData } = useRequest<{ data: ProductData, message?: string }>(() =>
-    postProductDetail(parseInt(route.params.id as string))
-);
+const { data: productData } = useRequest<{
+    data: ProductData;
+    message?: string;
+}>(() => postProductDetail(parseInt(route.params.id as string)));
 const { data: types } = useRequest<{ data: ProductType[] }>(getProductTypes);
 const typesData = computed(() => {
     const data: Record<number, string> = {};
