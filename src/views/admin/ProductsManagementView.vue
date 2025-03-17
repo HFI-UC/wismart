@@ -138,8 +138,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        if (isVerified) acceptLoading.value[product.id] = false;
-        else rejectLoading.value[product.id] = false;
+        acceptLoading.value[product.id] = rejectLoading.value[product.id] = false;
     } else {
         toast.add({
             severity: "error",
@@ -147,11 +146,8 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        if (isVerified) acceptLoading.value[product.id] = false;
-        else rejectLoading.value[product.id] = false;
+        acceptLoading.value[product.id] = rejectLoading.value[product.id] = false;
     }
-    if (isVerified) acceptLoading.value[product.id] = false;
-    else rejectLoading.value[product.id] = false;
     fetchProducts();
 };
 </script>

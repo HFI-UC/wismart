@@ -115,11 +115,12 @@ const tagSeverityMapping: Record<string, string> = {
     completed: "success",
 };
 
-const submitLoading = ref(false);
-
+const completeLoading = ref(false);
+const cancelLoading = ref(false)
 const onChangeEvent = async (data: boolean) => {
     if (!tradeData.value) return;
-    submitLoading.value = true;
+    if (data) completeLoading.value = true;
+    else cancelLoading.value = true
     const status = data ? "completed" : "canceled";
     const response = await postChangeTrade({
         id: tradeData.value.data.id,
@@ -132,7 +133,7 @@ const onChangeEvent = async (data: boolean) => {
             detail: response.message,
             life: 3000,
         });
-        submitLoading.value = false;
+        completeLoading.value = cancelLoading.value = false;
         fetchTradeDetail();
     } else {
         toast.add({
@@ -141,7 +142,7 @@ const onChangeEvent = async (data: boolean) => {
             detail: response.message,
             life: 3000,
         });
-        submitLoading.value = false;
+        completeLoading.value = cancelLoading.value = false;
     }
 };
 </script>
@@ -268,7 +269,8 @@ const onChangeEvent = async (data: boolean) => {
                             icon="icon-check"
                             severity="success"
                             label="完成交易"
-                            :loading="submitLoading"
+                            :loading="completeLoading"
+                            :disabled="cancelLoading"
                             @click="onChangeEvent(true)"
                         ></Button>
                         <Button
@@ -276,7 +278,8 @@ const onChangeEvent = async (data: boolean) => {
                             icon="icon-x"
                             severity="danger"
                             label="取消交易"
-                            :loading="submitLoading"
+                            :loading="cancelLoading"
+                            :disabled="completeLoading"
                             @click="onChangeEvent(false)"
                         ></Button>
                     </div>
