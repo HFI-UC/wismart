@@ -237,6 +237,9 @@ const onChangeEvent = async (form: FormSubmitEvent) => {
         <Card class="w-full">
             <template #content>
                 <DataTable class="w-full" :value="typesData.data">
+                    <template #empty>
+                        <p>无可用数据。</p>
+                    </template>
                     <template #header>
                         <div class="flex justify-between items-center w-full">
                             <h2 class="text-xl font-bold">商品类型</h2>
