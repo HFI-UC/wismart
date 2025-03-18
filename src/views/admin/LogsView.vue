@@ -58,7 +58,7 @@ watch(
         <Card class="w-full">
             <template #content>
                 <DataTable
-                    class="w-full"
+                    class="w-full font-mono"
                     :value="usersData.data"
                     removableSort
                     paginator
