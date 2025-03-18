@@ -83,7 +83,7 @@ watch(
                     <Column field="url" header="URL" sortable></Column>
                     <Column field="method" header="方法" sortable></Column>
                     <Column field="status" header="状态码" sortable></Column>
-                    <Column field="response" header="相应" sortable></Column>
+                    <Column field="response" header="响应" sortable></Column>
                 </DataTable>
             </template>
         </Card>
