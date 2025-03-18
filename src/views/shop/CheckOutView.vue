@@ -200,7 +200,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                 placeholder="数量"
                                 name="count"
                                 :min="1"
-                                :max="productData.data.stock || undefined"
+                                :max="productData.data.stock ? productData.data.stock - productData.data.sales : undefined"
                                 showButtons
                                 buttonLayout="horizontal"
                             >

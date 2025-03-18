@@ -11,6 +11,7 @@ import TypesManagementView from "../views/admin/TypesManagementView.vue";
 import CheckOutView from "../views/shop/CheckOutView.vue";
 import TradeDetailView from "../views/shop/TradeDetailView.vue";
 import UsersManagementView from "../views/admin/UsersManagementView.vue";
+import LogsView from "../views/admin/LogsView.vue";
 
 const router = createRouter({
     history: createWebHistory(),
@@ -60,6 +61,10 @@ const router = createRouter({
         {
             path: "/admin/types",
             component: TypesManagementView,
+        },
+        {
+            path: "/admin/logs",
+            component: LogsView,
         },
         {
             path: "/admin",

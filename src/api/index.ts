@@ -299,3 +299,8 @@ export async function getAllUsers() {
     const response = await axios.get<Response>("/api/user/all")
     return response.data
 }
+
+export async function getAllLogs() {
+    const response = await axios.get<Response>("/api/logs/all")
+    return response.data
+}
