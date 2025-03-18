@@ -61,6 +61,7 @@ watch(
                     class="w-full"
                     :value="usersData.data"
                     paginator
+                    :rows="10"
                     :rowsPerPageOptions="[10, 20, 30]"
                 >
                     <template #empty>
