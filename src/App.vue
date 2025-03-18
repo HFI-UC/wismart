@@ -62,7 +62,7 @@ onMounted(async () => {
 
 <template>
     <Toast></Toast>
-    <ConfirmDialog>
+    <ConfirmDialog class="min-w-[17rem]">
         <template #message="slotProps">
             <div class="flex flex-col items-center w-full gap-4">
                 <i :class="slotProps.message.icon" class="!text-6xl text-primary-500"></i>
