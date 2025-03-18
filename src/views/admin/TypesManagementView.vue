@@ -73,7 +73,6 @@ watch(
                 router.push("/");
             }, 3000);
         }
-        fetchTypes();
     }
 );
 

@@ -11,6 +11,7 @@ import {
     type ChangeProductData,
     type ProductData,
     type ProductType,
+    type UserProfile,
 } from "../../api";
 import Card from "primevue/card";
 import Button from "primevue/button";
@@ -23,14 +24,21 @@ import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: usersData } = useRequest<{
-    data: Record<number, { username: string; email: string }>;
+const { data: users } = useRequest<{
+    data: UserProfile[];
 }>(getAllUsers);
 const { data: types } = useRequest<{ data: ProductType[] }>(getProductTypes);
 const typesData = computed(() => {
     const data: Record<number, string> = {};
     types.value?.data?.map((item) => {
         data[item.id] = item.type;
+    });
+    return data;
+});
+const usersData = computed(() => {
+    const data: Record<number, { username: string; email: string }> = {};
+    users.value?.data?.map((item) => {
+        data[item.id] = { username: item.username, email: item.email };
     });
     return data;
 });
@@ -164,7 +172,9 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
 <template>
     <h1 class="text-4xl font-bold my-8">商品管理</h1>
     <div
-        v-if="adminData?.data && products && products.success && usersData?.data"
+        v-if="
+            adminData?.data && products && products.success && users?.data && types?.data
+        "
         class="flex flex-wrap items-start justify-between w-full gap-y-8"
     >
         <p v-if="!productsData.length">无可用数据。</p>
@@ -226,7 +236,13 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">上传者：</b
-                            >{{ usersData.data[product.ownerId].username }}
+                            >{{ usersData[product.ownerId].username }} <<a
+                                class="text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                                :href="`mailto:${
+                                    usersData[product.ownerId].email
+                                }`"
+                                >{{ usersData[product.ownerId].email }}</a
+                            >>
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">商品 ID：</b>{{ product.id }}

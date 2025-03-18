@@ -19,5 +19,10 @@ const router = useRouter();
             @click="router.push('/admin/types')"
             icon="icon-boxes"
         ></Button>
+        <Button
+            label="用户管理"
+            @click="router.push('/admin/users')"
+            icon="icon-users-round"
+        ></Button>
     </div>
 </template>
