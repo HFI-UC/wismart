@@ -12,7 +12,7 @@ const router = useRouter();
         >
             WisMart
         </h1>
-        <h2 class="my-5 sm:text-3xl text-2xl font-extrabold">HFI 二手交易平台</h2>
+        <h2 class="my-5 sm:text-3xl text-2xl font-extrabold text-center">HFI 二手交易平台</h2>
         <div class="mt-16 flex flex-wrap gap-4 items-center justify-center">
             <Button
                 @click="router.push('/shop')"
