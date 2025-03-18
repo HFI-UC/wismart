@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useRequest } from "vue-request";
-import { getAllUsers, getVerifyAdmin, getVerifyLogin } from "../../api";
+import { getAllLogs, getVerifyAdmin, getVerifyLogin } from "../../api";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Skeleton from "primevue/skeleton";
@@ -10,7 +10,7 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: usersData } = useRequest(getAllUsers);
+const { data: usersData } = useRequest(getAllLogs);
 const toast = useToast();
 const router = useRouter();
 watch(
