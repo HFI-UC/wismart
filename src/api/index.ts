@@ -294,3 +294,8 @@ export async function postChangeTrade(data: ChangeTradeData) {
     const response = await axios.post<Response>("/api/trade/change", data);
     return response.data;
 }
+
+export async function getAllUsers() {
+    const response = await axios.get<Response>("/api/user/all")
+    return response.data
+}

@@ -2,6 +2,7 @@
 import { useRequest } from "vue-request";
 import {
     getAllProducts,
+    getAllUsers,
     getProductTypes,
     getVerifyAdmin,
     getVerifyLogin,
@@ -22,7 +23,10 @@ import { useConfirm } from "primevue/useconfirm";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: types } = useRequest<{ data?: ProductType[] }>(getProductTypes);
+const { data: usersData } = useRequest<{
+    data: Record<number, { username: string; email: string }>;
+}>(getAllUsers);
+const { data: types } = useRequest<{ data: ProductType[] }>(getProductTypes);
 const typesData = computed(() => {
     const data: Record<number, string> = {};
     types.value?.data?.map((item) => {
@@ -94,8 +98,11 @@ const deleteProduct = (product: ProductData) => {
             outlined: true,
         },
         acceptProps: {
-            severity: 'danger',
+            severity: "danger",
             label: "确认",
+        },
+        reject: () => {
+            deleteLoading.value[product.id] = false;
         },
         accept: async () => {
             const response = await postRemoveProduct(product.id);
@@ -138,7 +145,8 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        acceptLoading.value[product.id] = rejectLoading.value[product.id] = false;
+        acceptLoading.value[product.id] = rejectLoading.value[product.id] =
+            false;
     } else {
         toast.add({
             severity: "error",
@@ -146,7 +154,8 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
             detail: response.message,
             life: 3000,
         });
-        acceptLoading.value[product.id] = rejectLoading.value[product.id] = false;
+        acceptLoading.value[product.id] = rejectLoading.value[product.id] =
+            false;
     }
     fetchProducts();
 };
@@ -155,7 +164,7 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
 <template>
     <h1 class="text-4xl font-bold my-8">商品管理</h1>
     <div
-        v-if="adminData?.data && products && products.success"
+        v-if="adminData?.data && products && products.success && usersData?.data"
         class="flex flex-wrap items-start justify-between w-full gap-y-8"
     >
         <p v-if="!productsData.length">无可用数据。</p>
@@ -217,11 +226,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">上传者：</b
-                            >{{ product.ownerId }}
+                            >{{ usersData.data[product.ownerId].username }}
                         </p>
                         <p class="text-lg">
-                            <b class="font-bold">商品 ID：</b
-                            >{{ product.id }}
+                            <b class="font-bold">商品 ID：</b>{{ product.id }}
                         </p>
                         <p class="text-lg">
                             <b class="font-bold">状态：</b>
@@ -244,7 +252,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         severity="success"
                         icon="icon-check"
                         label="上架"
-                        :disabled="rejectLoading[product.id] || deleteLoading[product.id]"
+                        :disabled="
+                            rejectLoading[product.id] ||
+                            deleteLoading[product.id]
+                        "
                         :loading="acceptLoading[product.id]"
                         @click="verifyProduct(true, product)"
                     ></Button>
@@ -253,7 +264,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         severity="danger"
                         icon="icon-x"
                         label="下架"
-                        :disabled="acceptLoading[product.id] || deleteLoading[product.id]"
+                        :disabled="
+                            acceptLoading[product.id] ||
+                            deleteLoading[product.id]
+                        "
                         :loading="rejectLoading[product.id]"
                         @click="verifyProduct(false, product)"
                     ></Button>
@@ -263,7 +277,10 @@ const verifyProduct = async (isVerified: boolean, product: ProductData) => {
                         icon="icon-x"
                         label="删除"
                         outlined
-                        :disabled="acceptLoading[product.id] || rejectLoading[product.id]"
+                        :disabled="
+                            acceptLoading[product.id] ||
+                            rejectLoading[product.id]
+                        "
                         :loading="deleteLoading[product.id]"
                         @click="deleteProduct(product)"
                     ></Button>
