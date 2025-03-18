@@ -178,6 +178,7 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                                     optionValue="id"
                                     name="type"
                                     placeholder="商品类型"
+                                    filter
                                 ></Select>
                                 <Message
                                     v-if="$form.type?.invalid"
