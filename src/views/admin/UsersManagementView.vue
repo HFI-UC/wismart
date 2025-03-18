@@ -10,7 +10,7 @@ import { useToast } from "primevue/usetoast";
 import { useRouter } from "vue-router";
 const { data: loginData } = useRequest(getVerifyLogin);
 const { data: adminData } = useRequest(getVerifyAdmin);
-const { data: typesData } = useRequest(getAllUsers);
+const { data: usersData } = useRequest(getAllUsers);
 const toast = useToast();
 const router = useRouter();
 watch(
@@ -52,14 +52,14 @@ watch(
 <template>
     <h1 class="text-4xl font-bold my-8">用户管理</h1>
     <div
-        v-if="typesData && typesData.success && loginData?.data"
+        v-if="usersData && usersData.success && loginData?.data"
         class="flex flex-wrap items-center justify-between w-full gap-y-8"
     >
         <Card class="w-full">
             <template #content>
                 <DataTable
                     class="w-full"
-                    :value="typesData.data"
+                    :value="usersData.data"
                     paginator
                     :rowsPerPageOptions="[10, 20, 30]"
                 >
