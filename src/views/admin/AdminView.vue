@@ -27,7 +27,7 @@ const router = useRouter();
         <Button
             label="日志"
             @click="router.push('/admin/logs')"
-            icon="icon-users-round"
+            icon="icon-scroll"
         ></Button>
     </div>
 </template>
