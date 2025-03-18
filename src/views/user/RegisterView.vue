@@ -224,6 +224,13 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             icon="icon-user-round-plus"
                             label="注册"
                         ></Button>
+                        <span class="text-center flex">
+                            <p class="italic">已有账号？</p><a
+                                class="text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                                @click="router.push('/user/login')"
+                                >登录</a
+                            >
+                        </span>
                     </div>
                 </Form>
             </template>

@@ -13,12 +13,14 @@ import Message from "primevue/message";
 import Button from "primevue/button";
 import { postLogin, getVerifyLogin, type LoginData } from "../../api";
 import { useRequest } from "vue-request";
+import { useRouter } from "vue-router";
 
 const props = defineProps<{
     callback?: string;
 }>();
 
 const { data: loginData } = useRequest(getVerifyLogin);
+const router = useRouter();
 
 watch(
     () => loginData.value,
@@ -174,6 +176,13 @@ const onSubmitEvent = async (form: FormSubmitEvent) => {
                             :loading="submitLoading"
                             label="登录"
                         ></Button>
+                        <span class="text-center flex">
+                            <p class="italic">没有账号？</p><a
+                                class="text-orange-400 hover:text-orange-300 transition-colors duration-300"
+                                @click="router.push('/user/register')"
+                                >注册</a
+                            >
+                        </span>
                     </div>
                 </Form>
             </template>
